@@ -1,0 +1,11 @@
+:root {
+  /* font family */
+  --dm-sans: "DM Sans", sans-serif;
+
+  /* color */
+  --primary-color: #FF7373;
+  --secondary-color: #73ABFF;
+  --green: #7EFF73;
+
+  font-family: var(--dm-sans);
+}

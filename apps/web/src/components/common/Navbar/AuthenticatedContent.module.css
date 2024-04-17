@@ -1,0 +1,50 @@
+.bookmark_button {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    column-gap: 0.3rem;
+    font-size: 1rem !important;
+}
+
+
+.button {
+    width: fit-content;
+    padding-left: 1.5rem !important;
+    padding-right: 1.5rem !important;
+
+    align-self: center;
+}
+
+.hamburger {
+    width: 1.4em;
+    height: 1.4rem;
+}
+
+.name {
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+.profile_container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+.profile_image {
+    border-radius: 50%;
+    width: 2.5rem;
+    height: 2.5rem;
+    box-shadow: 0px 4px 10px 0px #0000000D;
+}
+
+
+
+
+@media screen and (min-width: 768px) {
+    .profile_container {
+        column-gap: 1.5rem;
+    }
+}
