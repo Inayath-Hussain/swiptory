@@ -9,7 +9,8 @@ const userSchema = new Schema({
         type: String, required: true
     },
     profilePic: {
-        type: String, required: true
+        type: String, required: true,
+        default: "https://firebasestorage.googleapis.com/v0/b/swiptory-9ae2a.appspot.com/o/default%20profile%20picture.png?alt=media&token=e4f6f921-cb06-4900-a034-ab66c397da4a"
     }
 })
 
