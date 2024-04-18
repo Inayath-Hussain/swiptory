@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useContext } from "react";
 
 import CloseIcon from "@src/assets/icons/close_icon.svg";
 import ProfilePic from "@src/assets/images/default profile picture.png";
@@ -9,6 +9,7 @@ import BookmarkIcon from "@src/components/Icons/Bookmark";
 import useDeviceWidth from "@src/hooks/useDeviceWidth";
 
 import styles from "./AuthenticatedContent.module.css";
+import { authTokenContext } from "@src/context/authTokens";
 
 
 interface Iprops {
@@ -21,6 +22,7 @@ interface Iprops {
 const AuthenticatedContent: React.FC<Iprops> = ({ setOpen }) => {
 
     const { isDesktop } = useDeviceWidth();
+    const { logout } = useContext(authTokenContext);
 
     return (
         <>
@@ -49,7 +51,7 @@ const AuthenticatedContent: React.FC<Iprops> = ({ setOpen }) => {
             </PrimaryButton>
 
 
-            {isDesktop ? null : <PrimaryButton children="Logout" className={styles.button} />}
+            {isDesktop ? null : <PrimaryButton children="Logout" className={styles.button} handleClick={logout} />}
         </>
     );
 }

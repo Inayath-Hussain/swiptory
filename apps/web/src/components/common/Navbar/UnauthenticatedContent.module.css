@@ -13,6 +13,18 @@
     width: fit-content;
 }
 
+
+.close_button {
+    align-self: flex-end;
+}
+
+
+.close_image {
+    width: 1.4em;
+    height: 1.4rem;
+}
+
+
 .login_button {
     padding-left: 1.5rem;
     padding-right: 1.5rem;

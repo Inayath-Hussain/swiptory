@@ -39,7 +39,7 @@ const Navbar = () => {
                     // hamburger icon only for device's whose width less than 768px
                     isDesktop ? null :
                         <button onClick={handleSandwichOpenStatus}>
-                            <img src={HamburgerIcon} alt="" className={styles.sandwich_bar} />
+                            <img src={HamburgerIcon} alt="" className={styles.hamburger} />
                         </button>
                 }
 
@@ -56,7 +56,7 @@ const Navbar = () => {
                         isLoggedIn ?
                             <AuthenticatedContent setOpen={setOpen} />
                             :
-                            <UnauthenticatedContent />
+                            <UnauthenticatedContent setOpen={setOpen} />
                     }
 
                 </div>

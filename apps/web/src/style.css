@@ -5,7 +5,14 @@
   /* color */
   --primary-color: #FF7373;
   --secondary-color: #73ABFF;
+  --error-color: #FF0E0E;
+
   --green: #7EFF73;
 
+  font-family: var(--dm-sans);
+}
+
+
+input {
   font-family: var(--dm-sans);
 }

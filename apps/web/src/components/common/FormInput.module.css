@@ -1,0 +1,53 @@
+.input {
+    font-size: 0.8rem;
+    flex: 1;
+    border: none;
+}
+
+.input:focus {
+    border: none;
+    outline: none;
+}
+
+.input_container {
+    border: 1px solid #000;
+    padding: 0.5rem;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    column-gap: 0.5rem;
+}
+
+.label {
+    font-weight: 700;
+    font-size: 0.95rem;
+}
+
+
+.show_password_button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.show_password_image {
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+
+
+
+
+
+@media screen and (min-width: 768px) {
+    .container {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        column-gap: 2rem;
+    }
+}
