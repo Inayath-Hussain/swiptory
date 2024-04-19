@@ -1,7 +1,7 @@
 /**
  * class for cancelled api call
  */
-export class CancelledError {
+export class CanceledError {
     message: string;
 
     constructor(message: string) {

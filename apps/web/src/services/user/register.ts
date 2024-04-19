@@ -1,8 +1,8 @@
-import { AxiosError, CanceledError, GenericAbortSignal, HttpStatusCode } from "axios";
+import { AxiosError, GenericAbortSignal, HttpStatusCode } from "axios";
 
 import { apiURLs } from "../apiURLs";
 import { axiosInstance } from "../instance";
-import { ApiError } from "../errors";
+import { ApiError, CanceledError } from "../errors";
 
 
 interface Iprops {
@@ -31,7 +31,7 @@ export const registerService = async ({ payload, signal }: Iprops) =>
                         return resolve(new ApiError(ex.response.data.message));
 
                     case (ex.code === AxiosError.ERR_CANCELED):
-                        return resolve(new CanceledError());
+                        return resolve(new CanceledError("register api was canceled"));
                 }
             }
 

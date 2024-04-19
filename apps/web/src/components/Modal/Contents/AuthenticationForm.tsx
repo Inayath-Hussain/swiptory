@@ -7,7 +7,7 @@ import FormInput from "@src/components/common/FormInput";
 import SecondaryButton from "@src/components/common/SecondaryButton";
 import { useAbortController } from "@src/hooks/useAbortController";
 import { useOnline } from "@src/hooks/useOnline";
-import { ApiError, CancelledError } from "@src/services/errors";
+import { ApiError, CanceledError } from "@src/services/errors";
 import { loginService } from "@src/services/user/login";
 import { registerService } from "@src/services/user/register";
 
@@ -70,7 +70,7 @@ const AuthenticationForm: React.FC<Iprops> = ({ type, closeModal }) => {
 
         const handleResponse = (data: any) => {
             switch (true) {
-                case (data instanceof CancelledError):
+                case (data instanceof CanceledError):
                     return;
 
                 case (data instanceof ApiError):

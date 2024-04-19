@@ -7,7 +7,10 @@ interface Iprops {
 }
 
 
-// executes callback function when user click's outside of the provided ref.
+/**
+ * executes callback function when user click's outside of the provided ref.
+ * usually used to hide an element.
+ */
 const useClose = ({ handleClose, ref }: Iprops) => {
     useEffect(() => {
         const handleClick = (e: MouseEvent) => {
