@@ -5,7 +5,6 @@ import { categoriesSelector, updateSelectedCategory } from "@src/store/slices/ca
 
 
 import styles from "./CategoriesFilter.module.css";
-import { capitalize } from "@src/utilities/capitalize";
 
 
 const CategoriesFilter = () => {
@@ -57,7 +56,7 @@ const CategoriesFilter = () => {
 
                                 <img src={c.image} alt="" className={styles.image} />
 
-                                <p className={styles.name}>{capitalize(c.name)}</p>
+                                <p className={styles.name}>{c.displayText}</p>
 
                                 <input type="radio" value={c.name} onChange={handleChange} name="category"
                                     className={styles.input} />

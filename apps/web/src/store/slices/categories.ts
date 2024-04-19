@@ -1,9 +1,15 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { ICategories } from "@src/services/category/getCategories";
 import { RootState } from "../index";
+import { capitalize } from "@src/utilities/capitalize";
 
 
-interface IState extends ICategories {
+type ICategoriesData = ICategories["categories"][number] & {
+    displayText: string
+}
+
+interface IState {
+    categories: ICategoriesData[]
     isOptionsFetched: boolean
     isError: boolean
     selectedCategory: string
@@ -21,7 +27,12 @@ const slice = createSlice({
     initialState,
     reducers: {
         addCategoryOptions: (state, action: PayloadAction<ICategories>) => {
-            state.categories = action.payload.categories
+            // state.categories = action.payload.categories
+
+            const { categories } = action.payload;
+
+            state.categories = categories.map(m => ({ name: m.name, image: m.image, displayText: capitalize(m.name) }))
+
             state.isOptionsFetched = true
             state.isError = false
         },
