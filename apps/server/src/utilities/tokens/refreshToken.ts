@@ -73,7 +73,7 @@ type RenewReturn = RenewValid | RenewInvalid
  * 
  * valid status(value is true if new token is being sent or current token is valid),
  * 
- * email(if valid status is true, email encoded in token is sent)
+ * username(if valid status is true, username encoded in token is sent)
  * 
  *  newToken (set to true if token is renewed)
  */
@@ -87,7 +87,7 @@ export const renewRefreshToken = async (refreshToken: string): Promise<RenewRetu
     if (result.valid) {
         const { payload } = result
 
-        if (!payload.iat || !payload.email) return { refreshToken, valid: false }
+        if (!payload.iat || !payload.username) return { refreshToken, valid: false }
 
         // check creation date
         // renew if issue date is older than 1 day.
