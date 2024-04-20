@@ -1,0 +1,67 @@
+.card_container {
+    position: relative;
+
+    max-width: 330px;
+    border-radius: 0.5rem;
+
+    background:
+        /* top */
+        linear-gradient(rgb(0, 0, 0) 15%, rgba(0, 0, 0, 0) 35%),
+        /* bottom */
+        linear-gradient(0deg, rgb(0, 0, 0) 25%, rgba(0, 0, 0, 0) 50%);
+}
+
+
+.description {
+    font-size: 0.9rem;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
+    height: 4rem;
+}
+
+
+.heading {
+    font-weight: 700;
+    font-size: 1.1rem;
+
+    margin-bottom: 0.75rem;
+    height: 2.75rem;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+}
+
+
+.image {
+    width: 90svw;
+    max-width: inherit;
+    height: 500px;
+    border-radius: inherit;
+
+    position: relative;
+    z-index: -1;
+
+    object-fit: fill;
+}
+
+
+.text_container {
+    position: absolute;
+    top: 75%;
+    padding: 0 1.2rem;
+
+    height: 22%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    width: 100%;
+    box-sizing: border-box;
+
+    color: #fff;
+}

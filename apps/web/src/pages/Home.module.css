@@ -1,0 +1,19 @@
+.home_page_layout {
+    padding: 1rem 0.75rem;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    row-gap: 5rem;
+}
+
+
+
+
+@media screen and (min-width: 768px) {
+    .home_page_layout {
+        padding: 1.5rem 1rem;
+        align-items: flex-start;
+    }
+}

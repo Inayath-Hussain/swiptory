@@ -31,7 +31,7 @@ const CategoriesFilter = () => {
             {
                 // when there is an error when fetching categories
                 isError === true ?
-                    <h1 className={styles.header}>Some Error occured when fetching categories. <br />
+                    <h1 className={`${styles.header} ${styles.error}`}>Some Error occured when fetching categories. <br />
                         Please try again later</h1>
                     :
                     null
