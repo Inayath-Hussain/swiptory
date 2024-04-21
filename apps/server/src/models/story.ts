@@ -5,13 +5,14 @@ const slideSchema = new Schema({
     heading: { type: String, required: true },
     description: { type: String, required: true },
     image: { type: String, required: true },
-    category: { type: String, required: true }
 });
 
 
 
 const storySchema = new Schema({
     created_by: { type: Schema.Types.ObjectId, required: true },
+
+    category: { type: String, required: true },
 
     slides: {
         type: [slideSchema],

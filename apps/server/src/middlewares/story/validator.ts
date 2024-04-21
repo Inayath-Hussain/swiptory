@@ -13,24 +13,24 @@ interface InValid {
 
 
 /**
- * validate's if request body is a array and appropriate number of elements
+ * validate's if request body is an object and appropriate properties are present. And validates if slides
  * @param body request body
  * @returns 
  */
 export const bodyValidator = (body: any): Valid | InValid => {
-
     switch (true) {
 
-        case (Array.isArray(body) === false):
-            return { valid: false, errorMessage: "request body should be array" }
+        case (typeof body !== "object" || body === null || Array.isArray(body)):
+            return { valid: false, errorMessage: "request body should be an object" }
 
+        case (!body.slides):
+            return { valid: false, errorMessage: "slides field is required" }
 
-        case (body.length < 3):
-            return { valid: false, errorMessage: "Minimum 3 slides are required" }
+        case (!body.category):
+            return { valid: false, errorMessage: "category field is required" }
 
-
-        case (body.length > 6):
-            return { valid: false, errorMessage: "Maximum of 6 slides are allowed" }
+        case (Object.keys(body).length !== 2):
+            return { valid: false, errorMessage: "body should contain slides and category only" }
 
 
         default:
@@ -39,13 +39,40 @@ export const bodyValidator = (body: any): Valid | InValid => {
 }
 
 
+
+/**
+ * checks if slides property is an array with appropriate length
+ */
+export const slidesValidator = (slides: any): Valid | InValid => {
+    switch (true) {
+
+        case (Array.isArray(slides) === false):
+            return { valid: false, errorMessage: "slides field should be array" }
+
+        case (slides.length < 3):
+            return { valid: false, errorMessage: "Minimum 3 slides are required" }
+
+
+        case (slides.length > 6):
+            return { valid: false, errorMessage: "Maximum of 6 slides are allowed" }
+
+        default:
+            return { valid: true }
+    }
+}
+
+
+
+
+
+
 /**
  * checks if value is an object
  * @param slide 
  * @returns 
  */
 export const slideStructureValidator = (slide: any): Valid | InValid => {
-    if (typeof slide !== "object" || slide === null || Array.isArray(slide)) return { valid: false, errorMessage: "request body should only contain array of objects" }
+    if (typeof slide !== "object" || slide === null || Array.isArray(slide)) return { valid: false, errorMessage: "slides should only contain array of objects" }
 
     return { valid: true }
 }
@@ -59,12 +86,12 @@ export const slideStructureValidator = (slide: any): Valid | InValid => {
  * @param categoryOptions available category options
  * @returns 
  */
-export const slidePropertiesValidator = (slide: any, categoryOptions: string[]): Valid | InValid => {
+export const slidePropertiesValidator = (slide: any): Valid | InValid => {
 
     const headingValidationResult = _stringPropertyValidator(slide.heading, "heading");
     const descriptionValidationResult = _stringPropertyValidator(slide.description, "description");
     const imageValidationResult = imageValidator(slide.image);
-    const categoryValidationResult = categoryValidator(slide.category, categoryOptions);
+    // const categoryValidationResult = categoryValidator(slide.category, categoryOptions);
 
     switch (true) {
 
@@ -80,12 +107,12 @@ export const slidePropertiesValidator = (slide: any, categoryOptions: string[]):
             return { valid: false, errorMessage: imageValidationResult.errorMessage }
 
 
-        case (categoryValidationResult.valid === false):
-            return { valid: false, errorMessage: categoryValidationResult.errorMessage }
+        // case (categoryValidationResult.valid === false):
+        //     return { valid: false, errorMessage: categoryValidationResult.errorMessage }
 
 
-        case (Object.keys(slide).length > 4):
-            return { valid: false, errorMessage: "elements should contain heading, description, image and category only." }
+        case (Object.keys(slide).length > 3):
+            return { valid: false, errorMessage: "elements should contain heading, description and image only." }
 
         default:
             return { valid: true }
@@ -117,7 +144,7 @@ const imageValidator = (value: any): Valid | InValid => {
 
 
 
-const categoryValidator = (value: any, categoryOptions: string[]): Valid | InValid => {
+export const categoryValidator = (value: any, categoryOptions: string[]): Valid | InValid => {
     const basicValidation = _stringPropertyValidator(value, "category");
 
     switch (true) {
