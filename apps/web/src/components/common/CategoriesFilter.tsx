@@ -1,22 +1,25 @@
 import { ChangeEventHandler } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { categoriesSelector, updateSelectedCategory } from "@src/store/slices/categories";
+import { categoriesSelector } from "@src/store/slices/categories";
+import { updateStoriesQuery } from "@src/store/slices/storiesQuery";
 
 
 import styles from "./CategoriesFilter.module.css";
+import { storiesQuerySelector } from "@src/store/slices/storiesQuery";
 
 
 const CategoriesFilter = () => {
 
-    const { isError, isOptionsFetched, categories, selectedCategory } = useSelector(categoriesSelector);
+    const { isError, isOptionsFetched, categories } = useSelector(categoriesSelector);
+    const { options } = useSelector(storiesQuerySelector);
 
     const dispatch = useDispatch();
 
-    const handleChange: ChangeEventHandler<HTMLInputElement> = (e) => dispatch(updateSelectedCategory(e.target.value))
+    const handleChange: ChangeEventHandler<HTMLInputElement> = (e) => dispatch(updateStoriesQuery({ key: "category", value: e.target.value }))
 
 
-    const getLabelClass = (value: string) => selectedCategory === value ? `${styles.label} ${styles.active_label}` : styles.label
+    const getLabelClass = (value: string) => options.category === value ? `${styles.label} ${styles.active_label}` : styles.label
 
     return (
         <div className={styles.container}>

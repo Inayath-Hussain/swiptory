@@ -12,14 +12,12 @@ interface IState {
     categories: ICategoriesData[]
     isOptionsFetched: boolean
     isError: boolean
-    selectedCategory: string
 }
 
 const initialState: IState = {
     categories: [],
     isError: false,
-    isOptionsFetched: false,
-    selectedCategory: ""
+    isOptionsFetched: false
 }
 
 const slice = createSlice({
@@ -40,16 +38,12 @@ const slice = createSlice({
         addApiError: (state, action: PayloadAction<undefined>) => {
             state.isError = true
             state.isOptionsFetched = false
-        },
-
-        updateSelectedCategory: (state, action: PayloadAction<string>) => {
-            state.selectedCategory = action.payload
         }
     }
 })
 
 
-export const { addCategoryOptions, addApiError, updateSelectedCategory } = slice.actions;
+export const { addCategoryOptions, addApiError } = slice.actions;
 
 export const categoriesSlice = {
     name: slice.name,

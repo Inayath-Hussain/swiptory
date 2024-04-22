@@ -4,11 +4,17 @@ import Navbar from './components/common/Navbar/Index'
 import useGetCategories from './hooks/useGetCategories'
 import { routes } from './routes';
 import HomePage from './pages/Home';
+import { useGetStoriesQuery } from './store/slices/storiesApi';
+import { useSelector } from 'react-redux';
+import { storiesQuerySelector } from './store/slices/storiesQuery';
 
 
 function App() {
 
+  const { queryString } = useSelector(storiesQuerySelector);
+
   useGetCategories();
+  useGetStoriesQuery(queryString, { refetchOnMountOrArgChange: true });
 
   return (
     <>
@@ -19,10 +25,6 @@ function App() {
 
         </Route>
       </Routes>
-
-      <h1>Welcome</h1>
-      <h1>To</h1>
-      <h1>SwipTory</h1>
     </>
   )
 }

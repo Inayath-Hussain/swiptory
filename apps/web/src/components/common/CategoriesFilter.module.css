@@ -11,6 +11,7 @@
     /* column-gap: 1.5rem; */
 
     margin: 1.5rem 0;
+    padding-bottom: 1rem;
 
     overflow-x: auto;
     overflow-y: hidden;
@@ -19,6 +20,22 @@
 
 .container::-webkit-scrollbar {
     display: none;
+}
+
+.container::-webkit-scrollbar-track {
+    height: 4px;
+}
+
+
+::-webkit-scrollbar-button {
+    display: none;
+}
+
+
+.container::-webkit-scrollbar-thumb {
+    background: #9CB7C5;
+
+    border-radius: 4px;
 }
 
 
@@ -91,6 +108,13 @@
     .container {
         margin-top: 2rem;
     }
+
+    .container::-webkit-scrollbar {
+        height: 8px;
+        display: block;
+        background: transparent;
+    }
+
 
     .label {
         width: 200px;
