@@ -23,7 +23,10 @@ class StoryService {
         // get all categories
         const { categories } = await categoryService.getCategoryNames();
 
-        if (categories.includes(category)) return await Story.find({ category }, { updatedAt: 0, created_by: 0 }, { limit }).exec()
+        if (categories.includes(category)) {
+            const data = await Story.find({ category }, { updatedAt: 0, created_by: 0 }, { limit }).exec()
+            return { [category]: data }
+        }
 
         // get documents of each category
         await Promise.all(categories.map(async (c) => {
