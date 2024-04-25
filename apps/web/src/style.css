@@ -7,7 +7,9 @@
   --secondary-color: #73ABFF;
   --error-color: #FF0E0E;
 
-  --green: #7EFF73;
+  --green-color: #7EFF73;
+
+  --disabled-color: #737573;
 
   font-family: var(--dm-sans);
 }

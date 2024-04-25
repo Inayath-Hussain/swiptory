@@ -1,0 +1,71 @@
+.active {
+    border-color: var(--secondary-color) !important;
+}
+
+
+.slide_delete_button {
+    position: absolute;
+    top: -0.5rem;
+    right: -0.8rem;
+}
+
+
+.slide_delete_image {
+    width: 1rem;
+    height: 1rem;
+}
+
+
+.slides_nav {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+
+    row-gap: 0.8rem;
+}
+
+
+.slides_nav_button {
+    width: min-content;
+    font-weight: 700;
+    font-size: 0.8rem;
+
+    border: 2px solid #fff;
+
+    box-shadow: 0px 4px 15px 0px rgba(0, 0, 0, 0.102);
+
+    border-radius: 0.6rem;
+    padding: 0.75rem 0.5rem 0.8rem;
+
+    text-align: center;
+
+    position: relative;
+
+    cursor: pointer;
+}
+
+
+
+
+
+@media screen and (min-width: 768px) {
+    .slides_nav {
+        flex-direction: row;
+        justify-content: flex-start;
+
+        column-gap: 0.75rem;
+
+        margin-top: 0.75rem;
+        margin-bottom: 1.5rem;
+    }
+
+
+    .slides_nav_button {
+        width: auto;
+        padding: 1rem 0.65rem;
+
+        font-size: 0.9rem;
+    }
+
+}

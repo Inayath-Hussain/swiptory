@@ -3,7 +3,7 @@ import { Dispatch, SetStateAction } from "react";
 import PrimaryButton from "../PrimaryButton";
 import SecondaryButton from "../SecondaryButton";
 import CloseIcon from "@src/assets/icons/close_icon.svg";
-import AuthenticationForm from "@src/components/Modal/Contents/AuthenticationForm";
+import AuthenticationForm from "@src/components/Modal/Forms/AuthenticationForm";
 import useDeviceWidth from "@src/hooks/useDeviceWidth";
 import useModal from "@src/hooks/useModal";
 

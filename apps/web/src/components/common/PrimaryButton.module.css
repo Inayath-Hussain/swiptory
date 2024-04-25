@@ -7,3 +7,15 @@
     color: #fff;
     font-weight: 700;
 }
+
+
+.disabled {
+    background-color: var(--disabled-color);
+    cursor: not-allowed;
+}
+
+
+.loading {
+    background-color: var(--disabled-color);
+    cursor: wait !important;
+}

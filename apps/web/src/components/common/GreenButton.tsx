@@ -1,6 +1,5 @@
 import { PropsWithChildren } from "react";
-import styles from "./PrimaryButton.module.css";
-
+import styles from "./GreenButton.module.css";
 
 
 interface Iprops {
@@ -13,8 +12,10 @@ interface Iprops {
     type?: HTMLButtonElement["type"]
 }
 
-const PrimaryButton: React.FC<PropsWithChildren<Iprops>> = ({ className = "", children, type = "button", handleClick = () => { },
-    loading = false, disabled = false, title = "" }) => {
+
+const GreenButton: React.FC<PropsWithChildren<Iprops>> = ({ className = "", disabled, loading, handleClick = () => { },
+    type = "button", children, title = ""
+}) => {
 
     const additionalClass = loading ? styles.loading : disabled ? styles.disabled : "";
 
@@ -26,4 +27,4 @@ const PrimaryButton: React.FC<PropsWithChildren<Iprops>> = ({ className = "", ch
     );
 }
 
-export default PrimaryButton;
+export default GreenButton;

@@ -6,5 +6,8 @@ export const apiURLs = {
 
     getAllStories: "/api/story",
 
-    getAllStoriesOfCategory: (category: string) => `/api/story?category=${category}`
+    getAllStoriesOfCategory: (category: string) => `/api/story?category=${category}`,
+
+    postStory: "/api/story"
+
 }
