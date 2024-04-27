@@ -1,9 +1,8 @@
-import { createApi } from "@reduxjs/toolkit/query/react";
 import { AxiosError, HttpStatusCode } from "axios";
 
 import { apiURLs } from "@src/services/apiURLs";
-import { axiosBaseQuery } from "../axiosBaseQuery";
 import { ApiError, CanceledError, UnauthorizedError } from "@src/services/errors";
+import { baseApiSlice } from "./baseApiSlice";
 
 
 
@@ -35,13 +34,9 @@ interface IPostStoryPayload {
 }
 
 
-export const storiesApi = createApi({
-    reducerPath: "storiesApi",
-    baseQuery: axiosBaseQuery(),
 
-    tagTypes: ["Story"],
-
-    endpoints: (builder) => ({
+const storiesApi = baseApiSlice.injectEndpoints({
+    endpoints: builder => ({
         getStories: builder.query<IStories, string>({
             query: (queryString: string) => ({ url: `${apiURLs.getAllStories}?${queryString}` }),
             providesTags: ["Story"]
@@ -52,7 +47,7 @@ export const storiesApi = createApi({
             query: (data: IPostStoryPayload) => ({ url: apiURLs.postStory, data, credentials: "include", method: "POST" }),
 
             // invalidate tags only when request is successful
-            invalidatesTags: (result, error) => error ? [] : ["Story"],
+            invalidatesTags: (result, error) => error ? [] : ["Story", "User-Stories"],
 
             transformErrorResponse(baseQueryReturnValue: AxiosError<any, any> | string, meta, arg): ApiError | CanceledError | UnauthorizedError {
                 if (baseQueryReturnValue instanceof AxiosError) {
@@ -73,7 +68,6 @@ export const storiesApi = createApi({
         })
     })
 })
-
 
 
 export const { useGetStoriesQuery, usePostStoryMutation } = storiesApi;

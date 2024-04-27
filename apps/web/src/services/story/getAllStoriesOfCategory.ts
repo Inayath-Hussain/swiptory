@@ -2,7 +2,7 @@ import { AxiosError } from "axios";
 import { apiURLs } from "../apiURLs"
 import { axiosInstance } from "../instance"
 import { ApiError, CanceledError } from "../errors";
-import { IStories } from "@src/store/slices/storiesApi";
+import { IStories } from "@src/store/apiSlice/storiesApi";
 
 export const getAllStoriesOfCategoy = (category: string) =>
     new Promise<IStories | CanceledError | ApiError>(async (resolve) => {

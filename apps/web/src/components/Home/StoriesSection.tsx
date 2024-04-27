@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 
 import StoryCard from "./StoryCard";
 import PrimaryButton from "../common/PrimaryButton";
-import { ApiError, CanceledError } from "@src/services/errors";
-import { IStories } from "@src/store/slices/storiesApi";
+import { authTokenContext } from "@src/context/authTokens";
+import { ApiError, CanceledError, UnauthorizedError } from "@src/services/errors";
+import { IStories } from "@src/store/apiSlice/storiesApi";
 
 import styles from "./StoriesSection.module.css";
 
@@ -12,10 +13,14 @@ interface Iprops {
     header: string
     data: IStories[string] | undefined
     category: string
-    fetchAll: () => Promise<IStories | CanceledError | ApiError>
+    fetchAll: () => Promise<any>
+
+    userStory?: boolean
 }
 
-const StoriesSection: React.FC<Iprops> = ({ header, category, data, fetchAll }) => {
+const StoriesSection: React.FC<Iprops> = ({ header, category, data, fetchAll, userStory = false }) => {
+
+    const { logout } = useContext(authTokenContext);
 
     const [localData, setLocalData] = useState<typeof data>(data);
     const [fetchedAll, setFetchedAll] = useState(false);
@@ -29,13 +34,19 @@ const StoriesSection: React.FC<Iprops> = ({ header, category, data, fetchAll }) 
             case (result instanceof CanceledError):
                 return
 
+            case (userStory && result instanceof UnauthorizedError):
+                logout();
+                // please login again toast
+                return
+
             case (result instanceof ApiError):
                 // please try again later toast
                 return
 
 
             default:
-                setLocalData(result[category])
+                // if the component is user stories section then extract the data accordingly
+                setLocalData(userStory ? result.stories : result[category])
                 setFetchedAll(true)
                 return
         }

@@ -3,6 +3,8 @@ import { useCookies } from "react-cookie";
 import { useDispatch } from "react-redux";
 
 import { updateUserProfile } from "@src/store/slices/userProfile";
+import { defaultUserStoriesQueryString, resetUserStoriesApiSlice } from "@src/store/apiSlice/userStoriesApi";
+import { AppDispatch } from "@src/store";
 
 
 
@@ -22,7 +24,7 @@ export const AuthTokenProvider: React.FC<PropsWithChildren> = ({ children }) => 
     const { accessToken, refreshToken } = stateVariables[0];
     const removeCookie = stateVariables[2]
 
-    const dispatch = useDispatch()
+    const dispatch = useDispatch<AppDispatch>();
 
     const logout = () => {
         removeCookie("accessToken")
@@ -30,6 +32,9 @@ export const AuthTokenProvider: React.FC<PropsWithChildren> = ({ children }) => 
 
         // clear user info
         dispatch(updateUserProfile({ username: "", profilePicUrl: "" }))
+
+        // clear user stories
+        dispatch(resetUserStoriesApiSlice(defaultUserStoriesQueryString));
     }
 
     const isLoggedIn = Boolean(accessToken || refreshToken)

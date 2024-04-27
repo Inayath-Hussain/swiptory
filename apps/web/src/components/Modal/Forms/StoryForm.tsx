@@ -11,7 +11,7 @@ import SlidesNavbar from "../Components/StoryForm/SlidesNavbar";
 import useDeviceWidth from "@src/hooks/useDeviceWidth";
 import { useOnline } from "@src/hooks/useOnline";
 import { ApiError, CanceledError, UnauthorizedError } from "@src/services/errors";
-import { IStories, usePostStoryMutation } from "@src/store/slices/storiesApi";
+import { IStories, usePostStoryMutation } from "@src/store/apiSlice/storiesApi";
 import { categoriesSelector } from "@src/store/slices/categories";
 
 

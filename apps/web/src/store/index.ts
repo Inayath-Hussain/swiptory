@@ -3,7 +3,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import { userProfileSlice } from "./slices/userProfile";
 import { categoriesSlice } from "./slices/categories";
 import { storiesQuerySlice } from "./slices/storiesQuery";
-import { storiesApi } from "./slices/storiesApi";
+import { baseApiSlice } from "./apiSlice/baseApiSlice";
 
 
 export const store = configureStore({
@@ -12,12 +12,12 @@ export const store = configureStore({
         [categoriesSlice.name]: categoriesSlice.reducer,
         [storiesQuerySlice.name]: storiesQuerySlice.reducer,
 
-        [storiesApi.reducerPath]: storiesApi.reducer
+        [baseApiSlice.reducerPath]: baseApiSlice.reducer
     },
 
 
     middleware: (defaultMiddleware) => {
-        return defaultMiddleware().concat(storiesApi.middleware)
+        return defaultMiddleware().concat(baseApiSlice.middleware)
     }
 
 })
