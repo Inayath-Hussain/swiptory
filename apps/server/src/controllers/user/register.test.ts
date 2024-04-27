@@ -5,10 +5,23 @@ import { registerController } from "./register";
 import { userService } from "../../services/user";
 import { verifyAccessToken } from "../../utilities/tokens/accessToken";
 import { verifyRefreshToken } from "../../utilities/tokens/refreshToken";
+import { userStoriesService } from "../../services/userStories";
+import { UserStories } from "../../models/userStories";
+import mongoose from "mongoose";
 
 
 const mockedGetUser = jest.spyOn(userService, "getUser");
 const mockedCreateUser = jest.spyOn(userService, "createUser");
+const mockedAddNewUserStories = jest.spyOn(userStoriesService, "addNewUser");
+
+const mockedStartSession = jest.spyOn(mongoose, "startSession")
+    // @ts-ignore
+    .mockResolvedValue({
+        startTransaction: jest.fn(),
+        commitTransaction: jest.fn(),
+        abortTransaction: jest.fn(),
+        endSession: jest.fn()
+    });
 
 
 describe("register controller", () => {
@@ -42,6 +55,7 @@ describe("register controller", () => {
 
         const userDoc = new User(user);
         mockedCreateUser.mockResolvedValue(userDoc)
+        mockedAddNewUserStories.mockResolvedValue(new UserStories({ user: userDoc._id, stories: [] }))
 
         await registerController(req, res, next)
 
@@ -58,5 +72,7 @@ describe("register controller", () => {
 
         expect(refreshTokenPayload.valid).toBe(true)
         if (refreshTokenPayload.valid === true) expect(refreshTokenPayload.payload.username).toBe(user.username)
+
+        expect(mongoose.startSession).toHaveBeenCalledTimes(1)
     })
 })

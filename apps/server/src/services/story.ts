@@ -1,3 +1,4 @@
+import { ClientSession } from "mongoose";
 import { IAddStoryBody } from "../middlewares/story/validateAddStoryBody";
 import { IStory, Story } from "../models/story";
 import { categoryService } from "./category";
@@ -9,8 +10,10 @@ type IStoryData = Pick<IStory, "category" | "createdAt" | "slides">
 
 
 class StoryService {
-    async addStory(user_id: string, { category, slides }: IAddStoryBody) {
+    async addStory(user_id: string, { category, slides }: IAddStoryBody, session: ClientSession | null = null) {
         const storyDoc = new Story({ slides, category, created_by: user_id })
+
+        storyDoc.$session(session)
 
         return await storyDoc.save()
     }
