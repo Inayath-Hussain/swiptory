@@ -12,6 +12,9 @@ class UserService {
         return await User.findOne({ username });
     }
 
+    async getUserById(user_id: string) {
+        return await User.findById(user_id, { password: 0 });
+    }
 
     async createUser({ password, username }: CreateUserParam, session: ClientSession | null = null) {
         const salt = await genSalt(10);

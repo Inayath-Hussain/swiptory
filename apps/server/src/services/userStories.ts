@@ -26,6 +26,11 @@ class UserStoriesService {
 
         return await doc.save();
     }
+
+
+    async getUserStories(user_id: string) {
+        return await UserStories.findOne({ user: user_id }).populate("stories")
+    }
 }
 
 
