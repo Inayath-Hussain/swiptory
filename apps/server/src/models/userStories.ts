@@ -1,10 +1,10 @@
 import { InferSchemaType, Schema, model } from "mongoose";
 
 const userStoriesSchema = new Schema({
-    user: { type: Schema.Types.ObjectId, ref: "users", required: true, index: true },
+    user: { type: Schema.Types.ObjectId, ref: "user", required: true, index: true },
 
     stories: {
-        type: [Schema.Types.ObjectId], ref: "stories", required: true,
+        type: [Schema.Types.ObjectId], ref: "story", required: true,
         default: []
     }
 });

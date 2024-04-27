@@ -28,8 +28,8 @@ class UserStoriesService {
     }
 
 
-    async getUserStories(user_id: string) {
-        return await UserStories.findOne({ user: user_id }).populate("stories")
+    async getUserStories(user_id: string, limit: number | undefined) {
+        return await UserStories.findOne({ user: user_id }, { user: 0, _id: 0 }, { limit }).populate("stories", { updatedAt: 0, created_by: 0 })
     }
 }
 

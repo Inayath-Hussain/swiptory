@@ -20,7 +20,7 @@ class StoryService {
 
 
 
-    async getStories(limit: number, category: string) {
+    async getStories(limit: number | undefined, category: string) {
         const data: Record<string, IStoryData[]> = {};
 
         // get all categories
