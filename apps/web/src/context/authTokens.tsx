@@ -2,7 +2,7 @@ import { PropsWithChildren, createContext } from "react";
 import { useCookies } from "react-cookie";
 import { useDispatch } from "react-redux";
 
-import { updateUserName } from "@src/store/slices/userInfo";
+import { updateUserProfile } from "@src/store/slices/userProfile";
 
 
 
@@ -29,7 +29,7 @@ export const AuthTokenProvider: React.FC<PropsWithChildren> = ({ children }) => 
         removeCookie("refreshToken")
 
         // clear user info
-        dispatch(updateUserName({ name: "", profilePicUrl: "" }))
+        dispatch(updateUserProfile({ username: "", profilePicUrl: "" }))
     }
 
     const isLoggedIn = Boolean(accessToken || refreshToken)

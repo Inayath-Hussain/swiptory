@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction, useContext } from "react";
+import { useSelector } from "react-redux";
 
 import CloseIcon from "@src/assets/icons/close_icon.svg";
-import ProfilePic from "@src/assets/images/default profile picture.png";
 
 import PrimaryButton from "../PrimaryButton";
 import ProfileButton from "@src/components/Desktop/Common/Profile";
@@ -10,6 +10,7 @@ import StoryForm from "@src/components/Modal/Forms/StoryForm";
 import { authTokenContext } from "@src/context/authTokens";
 import useDeviceWidth from "@src/hooks/useDeviceWidth";
 import useModal from "@src/hooks/useModal";
+import { userProfileSelector } from "@src/store/slices/userProfile";
 
 import styles from "./AuthenticatedContent.module.css";
 
@@ -25,6 +26,7 @@ const AuthenticatedContent: React.FC<Iprops> = ({ setOpen }) => {
 
     const { isDesktop } = useDeviceWidth();
     const { logout } = useContext(authTokenContext);
+    const { username, profilePicUrl } = useSelector(userProfileSelector);
 
     const { showModal, hideModal, ModalPortal } = useModal();
 
@@ -33,13 +35,13 @@ const AuthenticatedContent: React.FC<Iprops> = ({ setOpen }) => {
     return (
         <>
             <div className={styles.profile_container}>
-                <img src={ProfilePic} alt="" className={styles.profile_image} />
+                <img src={profilePicUrl} alt="" className={styles.profile_image} />
 
-                {isDesktop ? null : <p className={styles.name}>Your Name</p>}
+                {isDesktop ? null : <p className={styles.name}>{username}</p>}
 
                 {
                     isDesktop ?
-                        <ProfileButton />
+                        <ProfileButton username={username} />
                         :
                         <button onClick={closeNavbar}>
                             <img src={CloseIcon} alt="" className={styles.hamburger} />

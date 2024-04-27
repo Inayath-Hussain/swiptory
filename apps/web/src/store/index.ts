@@ -1,6 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 
-import { userSlice } from "./slices/userInfo";
+import { userProfileSlice } from "./slices/userProfile";
 import { categoriesSlice } from "./slices/categories";
 import { storiesQuerySlice } from "./slices/storiesQuery";
 import { storiesApi } from "./slices/storiesApi";
@@ -8,7 +8,7 @@ import { storiesApi } from "./slices/storiesApi";
 
 export const store = configureStore({
     reducer: {
-        [userSlice.name]: userSlice.reducer,
+        [userProfileSlice.name]: userProfileSlice.reducer,
         [categoriesSlice.name]: categoriesSlice.reducer,
         [storiesQuerySlice.name]: storiesQuerySlice.reducer,
 
