@@ -1,17 +1,17 @@
 import { FormEventHandler, useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 
+import SlideDetail from "../Components/StoryForm/SlideDetail";
+import SlidesNavbar from "../Components/StoryForm/SlidesNavbar";
 import CloseCircleButton from "@src/components/common/CloseCircleButton";
 import ErrorMessage from "@src/components/common/ErrorMessage";
 import GreenButton from "@src/components/common/GreenButton";
 import PrimaryButton from "@src/components/common/PrimaryButton";
 import SecondaryButton from "@src/components/common/SecondaryButton";
-import SlideDetail from "../Components/StoryForm/SlideDetail";
-import SlidesNavbar from "../Components/StoryForm/SlidesNavbar";
 import useDeviceWidth from "@src/hooks/useDeviceWidth";
 import { useOnline } from "@src/hooks/useOnline";
 import { ApiError, CanceledError, UnauthorizedError } from "@src/services/errors";
-import { IStories, usePostStoryMutation } from "@src/store/apiSlice/storiesApi";
+import { IStories, useEditStoryMutation, usePostStoryMutation } from "@src/store/apiSlice/storiesApi";
 import { categoriesSelector } from "@src/store/slices/categories";
 
 
@@ -26,22 +26,30 @@ interface Iprops {
     type: "create" | "edit"
     data?: StoryData // _id, slides, category
     closeModal: () => void
-    closeNavbar: () => void
+    closeNavbar?: () => void
 }
 
 
-const StoryForm: React.FC<Iprops> = ({ data: dataProp = undefined, closeModal, closeNavbar }) => {
+const StoryForm: React.FC<Iprops> = ({ data: dataProp = undefined, closeModal, closeNavbar = undefined, type }) => {
 
-    const [post, { isLoading, isError, status }] = usePostStoryMutation();
+    const [post, { isLoading: isPostLoading }] = usePostStoryMutation();
+
+    const [edit, { isLoading: isEditLoading }] = useEditStoryMutation();
 
     const { isDesktop } = useDeviceWidth();
     const { isOnline } = useOnline();
     const { categories } = useSelector(categoriesSelector);
 
-    const [data, setData] = useState<StoryFormData>(dataProp || {
-        category: "",
-        slides: [1, 2, 3].map((v) => ({ _id: v.toString(), heading: "", description: "", image: "" }))
-    });
+    const initalState: StoryFormData = dataProp ?
+        JSON.parse(JSON.stringify({ category: dataProp.category, slides: dataProp.slides }))
+        :
+        {
+            category: "",
+            slides: [1, 2, 3].map((v) => ({ _id: v.toString(), heading: "", description: "", image: "" }))
+        }
+
+
+    const [data, setData] = useState<StoryFormData>(initalState);
 
     const [error, setError] = useState("");
 
@@ -55,10 +63,6 @@ const StoryForm: React.FC<Iprops> = ({ data: dataProp = undefined, closeModal, c
         setError(isOnline === false ? "You are offline" : "");
     }, [isOnline])
 
-
-    useEffect(() => {
-        console.log(status)
-    }, [isError])
 
     const addNewSlide = () => {
         if (data.slides.length >= 6) return
@@ -131,7 +135,7 @@ const StoryForm: React.FC<Iprops> = ({ data: dataProp = undefined, closeModal, c
      */
     const validate = () => {
         let errorMessage = "";
-        let errorSlideId = ""
+        let errorSlideId = "";
 
         for (const s of data.slides) {
             switch ("") {
@@ -173,6 +177,8 @@ const StoryForm: React.FC<Iprops> = ({ data: dataProp = undefined, closeModal, c
         setError(errorMessage)
         if (errorSlideId) setSelectedSlideID(errorSlideId);
 
+        // send form validity status
+        return errorMessage === ""
     }
 
 
@@ -181,39 +187,46 @@ const StoryForm: React.FC<Iprops> = ({ data: dataProp = undefined, closeModal, c
 
         if (isOnline === false) return
 
-        validate();
-
+        const isFormValid = validate();
+        if (isFormValid === false) return;
 
         // request body doesn't take _id property in slides array
         let slides: Omit<StoryData["slides"][number], "_id">[] = [];
         slides = data.slides.map(s => ({ description: s.description, heading: s.heading, image: s.image }))
 
 
-        post({ category: data.category, slides }).unwrap()
-            .then((result) => {
-                console.log(result)
-                closeModal();
-                closeNavbar();
-                return
-            })
-            .catch((err) => {
-                switch (true) {
-                    case (err instanceof CanceledError):
-                        return
+        const onSuccess = () => {
+            closeModal();
+            closeNavbar && closeNavbar();
+            return
+        }
 
-                    case (err instanceof ApiError):
-                        return setError(err.message)
+        const onError = (err: any) => {
+            switch (true) {
+                case (err instanceof CanceledError):
+                    return
 
-                    case (err instanceof UnauthorizedError):
-                        // please login again toast
-                        // closeModal()
-                        return
+                case (err instanceof ApiError):
+                    return setError(err.message)
 
-                    default:
-                        setError(err)
-                        return
-                }
-            })
+                case (err instanceof UnauthorizedError):
+                    // please login again toast
+                    closeModal()
+                    return
+
+                default:
+                    setError(err)
+                    return
+            }
+        }
+
+
+        // for story creation form, send post request
+        if (type === "create") post({ category: data.category, slides }).unwrap().then(onSuccess).catch(onError)
+
+        // for edit story form, send edit request
+        if (type === "edit") edit({ category: data.category, slides, story_id: dataProp?._id as string }).unwrap().then(onSuccess).catch(onError)
+
     }
 
 
@@ -230,7 +243,7 @@ const StoryForm: React.FC<Iprops> = ({ data: dataProp = undefined, closeModal, c
 
                 {/* form header */}
                 {/* text displayed in devices whose width is 768px and below */}
-                <h1 className={styles.form_header}>Add story to feed</h1>
+                <h1 className={styles.form_header}>{type === "create" ? "Add story to feed" : "Edit Story"}</h1>
 
 
                 <div className={styles.slides_layout}>
@@ -273,8 +286,8 @@ const StoryForm: React.FC<Iprops> = ({ data: dataProp = undefined, closeModal, c
                             null
                     }
 
-                    <PrimaryButton children="Post" type="submit" className={styles.submit_button} loading={isLoading}
-                        title="post story" />
+                    <PrimaryButton children="Post" type="submit" className={styles.submit_button} loading={isPostLoading || isEditLoading}
+                        title={type === "create" ? "post story" : "edit story"} />
                 </div>
 
 

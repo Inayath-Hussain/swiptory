@@ -14,6 +14,7 @@ import { useGetStoriesQuery } from "@src/store/apiSlice/storiesApi";
 import { storiesQuerySelector } from "@src/store/slices/storiesQuery";
 
 import styles from "./Home.module.css";
+import { userStoriesContext } from "@src/context/userStories";
 
 
 const HomePage = () => {
@@ -25,7 +26,7 @@ const HomePage = () => {
     const { queryString, options } = useSelector(storiesQuerySelector);
 
     const { isFetching, data } = useGetStoriesQuery(queryString);
-    const { data: userStories } = useGetUserStoriesQuery(queryString, { skip: isLoggedIn === false })
+    const { data: userStories } = useContext(userStoriesContext);
 
 
     const fetchAllFromCategory = (category: string) => getAllStoriesOfCategoy(category);
@@ -45,7 +46,7 @@ const HomePage = () => {
                     // if authenticated show your stories section in devices whose width is atleast 768px
                     (isLoggedIn && isDesktop && userStories) ?
                         <StoriesSection header="Your Stories" userStory
-                            data={userStories} category="Your Stories" fetchAll={() => fetchAllUserStories()} />
+                            data={[...userStories]} category="Your Stories" fetchAll={() => fetchAllUserStories()} />
                         :
                         null
                 }

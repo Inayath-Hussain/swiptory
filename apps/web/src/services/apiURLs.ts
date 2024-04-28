@@ -11,6 +11,8 @@ export const apiURLs = {
 
     postStory: "/api/story",
 
-    getUserStories: "/api/user/stories"
+    getUserStories: "/api/user/stories",
+
+    editPostStory: "/api/story"
 
 }
