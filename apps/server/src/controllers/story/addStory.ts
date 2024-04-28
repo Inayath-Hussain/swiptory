@@ -4,10 +4,11 @@ import { storyService } from "../../services/story";
 import { startSession } from "mongoose";
 import { userStoriesService } from "../../services/userStories";
 import { Ierror } from "../errorHandler";
+import { tryCatchWrapper } from "../../utilities/requestHandler/tryCatchWrapper";
 
 
 
-export const addStoryController: RequestHandler<{}, {}, IAddStoryBody> = async (req, res, next) => {
+const controller: RequestHandler<{}, {}, IAddStoryBody> = async (req, res, next) => {
     const user_id = req.user_id as string;
 
     const session = await startSession();
@@ -31,3 +32,7 @@ export const addStoryController: RequestHandler<{}, {}, IAddStoryBody> = async (
         await session.endSession();
     }
 }
+
+
+
+export const addStoryController = tryCatchWrapper(controller);

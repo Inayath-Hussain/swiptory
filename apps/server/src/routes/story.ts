@@ -1,19 +1,26 @@
 import { Router } from "express";
-import { tryCatchWrapper } from "../utilities/requestHandler/tryCatchWrapper";
-import { validateAddStoryBody } from "../middlewares/story/validateAddStoryBody";
+
 import { authMiddleware } from "../middlewares/auth/authMiddleware";
+
+import { validateAddStoryBody } from "../middlewares/story/validateAddStoryBody";
 import { addStoryController } from "../controllers/story/addStory";
+
 import { getStoriesController } from "../controllers/story/getStories";
+
+import { validateEditStoryBody } from "../middlewares/story/validateEditStoryBody";
+import { editStoryController } from "../controllers/story/editStory";
 
 
 const router = Router();
 
 
-router.post("/", tryCatchWrapper(authMiddleware), tryCatchWrapper(validateAddStoryBody))
-router.post("/", tryCatchWrapper(addStoryController))
+router.post("/", authMiddleware, validateAddStoryBody, addStoryController)
 
 
-router.get("/", tryCatchWrapper(getStoriesController))
+router.get("/", getStoriesController)
+
+
+router.put("/", authMiddleware, validateEditStoryBody, editStoryController)
 
 
 export { router as storyRouter }

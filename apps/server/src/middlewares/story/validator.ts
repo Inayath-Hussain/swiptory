@@ -12,12 +12,46 @@ interface InValid {
 
 
 
+
 /**
- * validate's if request body is an object and appropriate properties are present. And validates if slides
+ * validate's if request body is an object and appropriate properties are present
  * @param body request body
  * @returns 
  */
-export const bodyValidator = (body: any): Valid | InValid => {
+export const editStoryBodyValidator = (body: any): Valid | InValid => {
+    switch (true) {
+
+        case (typeof body !== "object" || body === null || Array.isArray(body)):
+            return { valid: false, errorMessage: "request body should be an object" }
+
+        case (!body.slides):
+            return { valid: false, errorMessage: "slides field is required" }
+
+        case (!body.category):
+            return { valid: false, errorMessage: "category field is required" }
+
+
+        case (!body.story_id):
+            return { valid: false, errorMessage: "story_id field is required" }
+
+        case (Object.keys(body).length !== 3):
+            return { valid: false, errorMessage: "body should contain story_id, slides and category only" }
+
+
+        default:
+            return { valid: true }
+    }
+}
+
+
+
+
+/**
+ * validate's if request body is an object and appropriate properties are present
+ * @param body request body
+ * @returns 
+ */
+export const addStoryBodyValidator = (body: any): Valid | InValid => {
     switch (true) {
 
         case (typeof body !== "object" || body === null || Array.isArray(body)):
@@ -160,6 +194,23 @@ export const categoryValidator = (value: any, categoryOptions: string[]): Valid 
             return { valid: true }
     }
 }
+
+
+
+
+export const storyIdValidator = (value: any): Valid | InValid => {
+    switch (true) {
+        case (typeof value === "string"):
+            return { valid: true }
+
+        case (typeof value === "number"):
+            return { valid: true }
+
+        default:
+            return { valid: false, errorMessage: "story_id should be either string or number" }
+    }
+}
+
 
 
 

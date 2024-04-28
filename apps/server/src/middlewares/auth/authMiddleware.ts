@@ -1,15 +1,16 @@
 import { RequestHandler } from "express";
 
 import { Ierror } from "../../controllers/errorHandler";
+import { userService } from "../../services/user";
 import { expireAccessTokenCookie, signAccessTokenCookie } from "../../utilities/cookies/signAccessToken";
 import { expireRefreshTokenCookie, signRefreshTokenCookie } from "../../utilities/cookies/signRefreshToken";
 import { createAccessToken, verifyAccessToken } from "../../utilities/tokens/accessToken";
 import { renewRefreshToken } from "../../utilities/tokens/refreshToken";
 import { validateAuthTokens } from "../../utilities/tokens/validateAuthTokens";
-import { userService } from "../../services/user";
+import { tryCatchWrapper } from "../../utilities/requestHandler/tryCatchWrapper";
 
 
-export const authMiddleware: RequestHandler = async (req, res, next) => {
+const middleware: RequestHandler = async (req, res, next) => {
     const { accessToken, refreshToken } = req.signedCookies
 
     // if no auth tokens are present, send 401 response
@@ -93,3 +94,7 @@ export const authMiddleware: RequestHandler = async (req, res, next) => {
 
     next();
 }
+
+
+
+export const authMiddleware = tryCatchWrapper(middleware);

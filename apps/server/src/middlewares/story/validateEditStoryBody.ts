@@ -1,10 +1,8 @@
 import { RequestHandler } from "express";
-
-import { sanitizeAll } from "../sanitizeBase";
-import { addStoryBodyValidator, categoryValidator, slidePropertiesValidator, slideStructureValidator, slidesValidator } from "./validator";
+import { categoryValidator, editStoryBodyValidator, slidePropertiesValidator, slideStructureValidator, slidesValidator, storyIdValidator } from "./validator";
+import { sanitize, sanitizeAll } from "../sanitizeBase";
 import { categoryService } from "../../services/category";
 import { tryCatchWrapper } from "../../utilities/requestHandler/tryCatchWrapper";
-
 
 interface IStorySlide {
     heading: string
@@ -12,27 +10,24 @@ interface IStorySlide {
     image: string
 }
 
-export interface IAddStoryBody {
+export interface IEditStoryBody {
     slides: IStorySlide[],
     category: string
+    story_id: string
 };
 
 
+const middleware: RequestHandler<{}, {}, IEditStoryBody> = async (req, res, next) => {
 
-
-// body - category: string, slides: obj[]
-
-// check body is obj
-// slideValidator, slideStructueValidator, slideSanitize, slidePropertyValidator
-// category sanitization, categoryValidator
-
-
-const middleware: RequestHandler<{}, {}, IAddStoryBody> = async (req, res, next) => {
-
-    // checks if request body is an object and has two fields slides and category
-    const bodyValidationResult = addStoryBodyValidator(req.body);
+    // checks if request body is an object and has three fields story_id, slides and category
+    const bodyValidationResult = editStoryBodyValidator(req.body);
     if (bodyValidationResult.valid === false) return res.status(422).json({ message: bodyValidationResult.errorMessage });
 
+
+    // checks if story_id is valid
+    req.body.story_id = sanitize(req.body.story_id);
+    const storyIdValidationResult = storyIdValidator(req.body.story_id);
+    if (storyIdValidationResult.valid === false) return res.status(422).jsonp({ message: storyIdValidationResult.errorMessage })
 
     // checks if slides property is an array with appropriate length
     const slidesValidationResult = slidesValidator(req.body.slides);
@@ -45,13 +40,13 @@ const middleware: RequestHandler<{}, {}, IAddStoryBody> = async (req, res, next)
 
 
     // validate all elements in request body array
-    const isRequestBodyValid = req.body.slides.every(slide => {
+    const isSlidesValid = req.body.slides.every(slide => {
 
         // check if each element is an object
-        const structureValidationResult = slideStructureValidator(slide);
-        if (structureValidationResult.valid === false) {
-            errorMessage = structureValidationResult.errorMessage;
-            return structureValidationResult.valid
+        const slideStructureValidationResult = slideStructureValidator(slide);
+        if (slideStructureValidationResult.valid === false) {
+            errorMessage = slideStructureValidationResult.errorMessage;
+            return slideStructureValidationResult.valid
         }
 
 
@@ -66,7 +61,7 @@ const middleware: RequestHandler<{}, {}, IAddStoryBody> = async (req, res, next)
     })
 
 
-    if (isRequestBodyValid === false) return res.status(422).json({ message: errorMessage })
+    if (isSlidesValid === false) return res.status(422).json({ message: errorMessage })
 
 
     // category is checked at last to minimize db interactions
@@ -82,4 +77,7 @@ const middleware: RequestHandler<{}, {}, IAddStoryBody> = async (req, res, next)
 
 
 
-export const validateAddStoryBody = tryCatchWrapper(middleware)
+
+
+
+export const validateEditStoryBody = tryCatchWrapper(middleware);

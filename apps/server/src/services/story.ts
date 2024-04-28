@@ -7,6 +7,7 @@ import { categoryService } from "./category";
 type IStoryData = Pick<IStory, "category" | "createdAt" | "slides">
 
 
+type UpdateStoryPayload = Partial<IStory> & { _id: string }
 
 
 class StoryService {
@@ -39,6 +40,13 @@ class StoryService {
 
 
         return data
+    }
+
+
+
+    async updateStory({ _id, slides, category }: UpdateStoryPayload, user_id: string) {
+        console.log(user_id)
+        return await Story.findOneAndUpdate({ _id, created_by: user_id }, { slides, category }, { returnOriginal: false })
     }
 
 }

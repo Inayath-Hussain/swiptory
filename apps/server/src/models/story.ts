@@ -1,4 +1,5 @@
 import { InferSchemaType, Schema, model } from "mongoose";
+import { slidesValidator } from "../middlewares/story/validator";
 
 
 const slideSchema = new Schema({
@@ -45,9 +46,7 @@ function maxSlidesLengthValidator(value: typeof slideSchema[]) {
 
 
 
-
-
-export type IStory = InferSchemaType<typeof storySchema>;
+export type IStory = Omit<InferSchemaType<typeof storySchema>, "slides"> & { slides: InferSchemaType<typeof slidesValidator> }
 
 
 export const Story = model("story", storySchema);
