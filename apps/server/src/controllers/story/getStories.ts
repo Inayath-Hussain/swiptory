@@ -1,7 +1,8 @@
 import { RequestHandler } from "express";
 import { storyService } from "../../services/story";
+import { tryCatchWrapper } from "../../utilities/requestHandler/tryCatchWrapper";
 
-export const getStoriesController: RequestHandler = async (req, res, next) => {
+const controller: RequestHandler = async (req, res, next) => {
     let { limit: limitQuery, category: categoryQuery } = req.query;
 
     const limit = isFinite(limitQuery as unknown as number) ? Number(limitQuery) : undefined;
@@ -11,3 +12,7 @@ export const getStoriesController: RequestHandler = async (req, res, next) => {
 
     return res.status(200).json(data)
 }
+
+
+
+export const getStoriesController = tryCatchWrapper(controller);

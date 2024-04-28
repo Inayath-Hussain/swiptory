@@ -4,14 +4,15 @@ import { startSession } from "mongoose";
 import { Ierror } from "../errorHandler";
 import { IAuthRequestBody } from "../../middlewares/user/validateAuthRequestBody";
 import { userService } from "../../services/user";
+import { userStoriesService } from "../../services/userStories";
 import { createAccessToken } from "../../utilities/tokens/accessToken";
 import { createRefreshToken } from "../../utilities/tokens/refreshToken";
 import { signAccessTokenCookie } from "../../utilities/cookies/signAccessToken";
 import { signRefreshTokenCookie } from "../../utilities/cookies/signRefreshToken";
-import { userStoriesService } from "../../services/userStories";
+import { tryCatchWrapper } from "../../utilities/requestHandler/tryCatchWrapper";
 
 
-export const registerController: RequestHandler<{}, {}, IAuthRequestBody> = async (req, res, next) => {
+const controller: RequestHandler<{}, {}, IAuthRequestBody> = async (req, res, next) => {
     const { username, password } = req.body;
 
     const existingUserDoc = await userService.getUser(username);
@@ -53,3 +54,8 @@ export const registerController: RequestHandler<{}, {}, IAuthRequestBody> = asyn
         await session.endSession();
     }
 }
+
+
+
+
+export const registerController = tryCatchWrapper(controller);

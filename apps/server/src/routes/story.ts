@@ -16,9 +16,7 @@ const router = Router();
 
 router.post("/", authMiddleware, validateAddStoryBody, addStoryController)
 
-
 router.get("/", getStoriesController)
-
 
 router.put("/", authMiddleware, validateEditStoryBody, editStoryController)
 

@@ -1,9 +1,10 @@
 import { RequestHandler } from "express";
 
 import { userStoriesService } from "../../services/userStories";
+import { tryCatchWrapper } from "../../utilities/requestHandler/tryCatchWrapper";
 
 
-export const getUserStoriesController: RequestHandler = async (req, res, next) => {
+const controller: RequestHandler = async (req, res, next) => {
     const user_id = req.user_id as string;
     const { limit: limitQuery } = req.query;
 
@@ -13,3 +14,8 @@ export const getUserStoriesController: RequestHandler = async (req, res, next) =
 
     return res.status(200).json(stories);
 }
+
+
+
+
+export const getUserStoriesController = tryCatchWrapper(controller);
