@@ -1,0 +1,29 @@
+.close_button {
+    width: 1rem;
+    height: 1rem;
+}
+
+
+
+.share_button {
+    width: 1.25rem;
+    height: 1.25rem;
+}
+
+
+.top_buttons_container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-top: 0.5rem;
+}
+
+
+
+@media screen and (min-width: 768px) {
+    .top_buttons_container {
+        margin-top: 1rem;
+    }
+}

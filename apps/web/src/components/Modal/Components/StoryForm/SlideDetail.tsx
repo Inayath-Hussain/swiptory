@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import styles from "./SlideDetail.module.css";
 import { categoriesSelector } from "@src/store/slices/categories";
 import { Dispatch, SetStateAction } from "react";
-import { StoryFormData } from "../../Forms/StoryForm";
+import { StoryFormData } from "../../Content/StoryForm";
 
 
 interface Iprops {

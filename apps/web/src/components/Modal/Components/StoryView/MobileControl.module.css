@@ -1,0 +1,19 @@
+.control {
+    flex: 1;
+    height: 100%;
+
+    z-index: 1;
+}
+
+
+.mobile_slide_control_container {
+    width: 100svw;
+    height: 100svh;
+
+    position: absolute;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: stretch;
+}

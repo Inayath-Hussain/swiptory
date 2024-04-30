@@ -6,7 +6,7 @@ import CloseIcon from "@src/assets/icons/close_icon.svg";
 import PrimaryButton from "../PrimaryButton";
 import ProfileButton from "@src/components/Desktop/Common/Profile";
 import BookmarkIcon from "@src/components/Icons/Bookmark";
-import StoryForm from "@src/components/Modal/Forms/StoryForm";
+import StoryForm from "@src/components/Modal/Content/StoryForm";
 import { authTokenContext } from "@src/context/authTokens";
 import useDeviceWidth from "@src/hooks/useDeviceWidth";
 import useModal from "@src/hooks/useModal";

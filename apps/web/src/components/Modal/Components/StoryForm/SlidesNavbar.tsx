@@ -1,6 +1,6 @@
 
 import CloseCircleButton from "@src/components/common/CloseCircleButton";
-import { StoryFormData } from "../../Forms/StoryForm";
+import { StoryFormData } from "../../Content/StoryForm";
 
 import styles from "./SlidesNavbar.module.css";
 

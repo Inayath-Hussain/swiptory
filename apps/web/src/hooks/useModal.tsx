@@ -23,13 +23,14 @@ const useModal = () => {
     /**
      * this function should be called inside render lifecycle of component.
      */
-    const ModalPortal = (ModalComponent: JSX.Element): React.ReactPortal | null => {
+    const ModalPortal = (ModalComponent: JSX.Element, closeWhenClickedOutside: boolean = true): React.ReactPortal | null => {
 
         const modalDiv = document.getElementById("modal");
 
         if (modalDiv === null) throw Error("element with id 'modal' not found")
 
-        if (showModalState) return createPortal(<ModalBase close={hideModal}> {ModalComponent} </ModalBase>, modalDiv)
+        const close = closeWhenClickedOutside ? hideModal : () => { }
+        if (showModalState) return createPortal(<ModalBase close={close}> {ModalComponent} </ModalBase>, modalDiv)
 
         return null
     }

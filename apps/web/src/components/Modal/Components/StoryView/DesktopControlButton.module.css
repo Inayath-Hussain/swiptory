@@ -1,0 +1,15 @@
+.arrow {
+    width: 2rem;
+    height: 2rem;
+}
+
+
+.left {
+    transform: rotateY(0deg);
+}
+
+
+
+.right {
+    transform: rotateY(180deg);
+}

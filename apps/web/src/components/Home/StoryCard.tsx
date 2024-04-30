@@ -6,7 +6,8 @@ import { userStoriesContext } from "@src/context/userStories";
 import styles from "./StoryCard.module.css";
 import useModal from "@src/hooks/useModal";
 import { IStories } from "@src/store/apiSlice/storiesApi";
-import StoryForm from "../Modal/Forms/StoryForm";
+import StoryForm from "../Modal/Content/StoryForm";
+import StoryView from "../Modal/Content/StoryView";
 
 interface Iprops {
     data: {
@@ -23,6 +24,7 @@ interface Iprops {
 const StoryCard: React.FC<Iprops> = ({ data, story_id, getStoryData }) => {
 
     const { ModalPortal, hideModal, showModal } = useModal();
+    const { ModalPortal: StoryViewModal, hideModal: hideStoryView, showModal: showStoryView } = useModal();
 
     const { data: userStories } = useContext(userStoriesContext);
 
@@ -33,7 +35,7 @@ const StoryCard: React.FC<Iprops> = ({ data, story_id, getStoryData }) => {
 
     return (
         <>
-            <div className={styles.card_container}>
+            <div className={styles.card_container} onClick={showStoryView}>
                 <img src={data.image} alt="" className={styles.image} />
 
                 <div className={styles.text_container}>
@@ -54,6 +56,8 @@ const StoryCard: React.FC<Iprops> = ({ data, story_id, getStoryData }) => {
             </div>
 
             {ModalPortal(<StoryForm closeModal={hideModal} type="edit" data={getStoryData(story_id)} />)}
+
+            {StoryViewModal(<StoryView data={getStoryData(story_id) as IStories[string][number]} closeModal={hideStoryView} />, false)}
         </>
     );
 }
