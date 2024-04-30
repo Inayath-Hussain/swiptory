@@ -2,7 +2,7 @@ import { ClientSession, Types } from "mongoose";
 import { UserStories } from "../models/userStories";
 
 class UserStoriesService {
-    async addNewUser(user_id: string, session: ClientSession | null = null) {
+    async addNewUser(user_id: Types.ObjectId, session: ClientSession | null = null) {
         const newDoc = new UserStories({ user: user_id, stories: [] })
 
         // assosiate with session if provided or null
@@ -16,10 +16,7 @@ class UserStoriesService {
 
         let doc = await UserStories.findOne({ user: user_id }, {}, { session })
 
-        // if a document isn't already created for user, create one
-        if (doc === null) {
-            doc = await this.addNewUser(user_id, session)
-        }
+        if (doc === null) return null;
 
         // add story 
         doc.stories.push(story_id);

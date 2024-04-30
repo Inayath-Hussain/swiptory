@@ -45,10 +45,32 @@ class StoryService {
 
 
     async updateStory({ _id, slides, category }: UpdateStoryPayload, user_id: string) {
-        console.log(user_id)
         return await Story.findOneAndUpdate({ _id, created_by: user_id }, { slides, category }, { returnOriginal: false })
     }
 
+
+
+    async likeStory(story_id: string, session: ClientSession | null = null) {
+        const storyDoc = await Story.findById(story_id, {}, { session });
+
+        if (storyDoc === null) return null;
+
+        storyDoc.likes = storyDoc.likes + 1;
+
+        return await storyDoc.save()
+    }
+
+
+
+    async unlikeStory(story_id: string, session: ClientSession | null = null) {
+        const storyDoc = await Story.findById(story_id, {}, { session });
+
+        if (storyDoc === null) return null;
+
+        storyDoc.likes = storyDoc.likes - 1;
+
+        return await storyDoc.save()
+    }
 }
 
 

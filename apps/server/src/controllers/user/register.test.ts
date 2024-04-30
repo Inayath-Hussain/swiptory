@@ -8,11 +8,14 @@ import { verifyRefreshToken } from "../../utilities/tokens/refreshToken";
 import { userStoriesService } from "../../services/userStories";
 import { UserStories } from "../../models/userStories";
 import mongoose from "mongoose";
+import { userLikedStoriesService } from "../../services/userLikedStories";
+import { UserLikedStories } from "../../models/userLikedStories";
 
 
 const mockedGetUser = jest.spyOn(userService, "getUser");
 const mockedCreateUser = jest.spyOn(userService, "createUser");
 const mockedAddNewUserStories = jest.spyOn(userStoriesService, "addNewUser");
+const mockedAddNewUserLikedStories = jest.spyOn(userLikedStoriesService, "addNewUser");
 
 const mockedStartSession = jest.spyOn(mongoose, "startSession")
     // @ts-ignore
@@ -56,6 +59,7 @@ describe("register controller", () => {
         const userDoc = new User(user);
         mockedCreateUser.mockResolvedValue(userDoc)
         mockedAddNewUserStories.mockResolvedValue(new UserStories({ user: userDoc._id, stories: [] }))
+        mockedAddNewUserLikedStories.mockResolvedValue(new UserLikedStories({ user: userDoc._id, stories: [] }))
 
         await registerController(req, res, next)
 

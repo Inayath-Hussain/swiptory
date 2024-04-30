@@ -200,6 +200,10 @@ export const categoryValidator = (value: any, categoryOptions: string[]): Valid 
 
 export const storyIdValidator = (value: any): Valid | InValid => {
     switch (true) {
+
+        case (!value):
+            return { valid: false, errorMessage: "story_id is required" }
+
         case (typeof value === "string"):
             return { valid: true }
 

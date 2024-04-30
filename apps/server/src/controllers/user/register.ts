@@ -10,6 +10,7 @@ import { createRefreshToken } from "../../utilities/tokens/refreshToken";
 import { signAccessTokenCookie } from "../../utilities/cookies/signAccessToken";
 import { signRefreshTokenCookie } from "../../utilities/cookies/signRefreshToken";
 import { tryCatchWrapper } from "../../utilities/requestHandler/tryCatchWrapper";
+import { userLikedStoriesService } from "../../services/userLikedStories";
 
 
 const controller: RequestHandler<{}, {}, IAuthRequestBody> = async (req, res, next) => {
@@ -29,7 +30,9 @@ const controller: RequestHandler<{}, {}, IAuthRequestBody> = async (req, res, ne
     try {
         const userDoc = await userService.createUser({ username, password }, session);
 
-        await userStoriesService.addNewUser(userDoc._id.toString(), session);
+        await userStoriesService.addNewUser(userDoc._id, session);
+
+        await userLikedStoriesService.addNewUser(userDoc._id);
 
         // commit if both tasks are successful
         await session.commitTransaction();
