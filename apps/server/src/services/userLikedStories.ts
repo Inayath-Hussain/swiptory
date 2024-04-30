@@ -43,6 +43,15 @@ class UserLikedStoriesService {
 
         return await doc.save();
     }
+
+
+
+    async getAllLikedStoriesOfUser(user_id: string) {
+        const doc = await UserLikedStories.findOne({ user: user_id });
+
+        if (doc === null) return [];
+        return doc.stories;
+    }
 }
 
 
