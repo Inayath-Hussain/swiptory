@@ -25,7 +25,9 @@ const storySchema = new Schema({
             validator: maxSlidesLengthValidator,
             message: "Maximum of 6 slides are allowed"
         }]
-    }
+    },
+
+    likes: { type: Number, required: true, default: 0 }
 }, { timestamps: true });
 
 // validator function to check if slides array has atleast 3 items
