@@ -9,7 +9,7 @@ export const connectToDb = () => {
     return new Promise(async resolve => {
         try {
             const connection = await connect(URL)
-            if (connection) console.log("Connected to mongodb");
+            if (connection) console.log("Connected to mongodb in", env.NODE_ENV);
 
             resolve(connection)
         }
