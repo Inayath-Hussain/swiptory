@@ -12,6 +12,7 @@ import useAuthenticatedQueries from './hooks/useAuthenticatedQueries';
 import BookmarkPage from './pages/Bookmark';
 import useDeviceWidth from './hooks/useDeviceWidth';
 import YourStoriesPage from './pages/YourStories';
+import useLoader from './hooks/useLoader';
 
 
 function App() {
@@ -21,7 +22,7 @@ function App() {
   const { queryString } = useSelector(storiesQuerySelector);
 
   useGetCategories();
-  useGetStoriesQuery(queryString, { refetchOnMountOrArgChange: true });
+  const { isFetching: getStoriesQueryLoading } = useGetStoriesQuery(queryString, { refetchOnMountOrArgChange: true });
 
 
   // fetch profile info when user is authenticated
@@ -30,6 +31,8 @@ function App() {
 
   useAuthenticatedQueries();
 
+
+  useLoader([getStoriesQueryLoading])
 
 
   return (

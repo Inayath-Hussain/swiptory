@@ -28,6 +28,8 @@ const AuthenticationForm: React.FC<Iprops> = ({ type, closeModal }) => {
         password: ""
     });
 
+    const [loading, setLoading] = useState(false);
+
     // update form value state
     const handleChange = (key: keyof typeof formValue, e: ChangeEvent<HTMLInputElement>) => setFormValue(prev => ({ ...prev, [key]: e.target.value }))
 
@@ -69,6 +71,7 @@ const AuthenticationForm: React.FC<Iprops> = ({ type, closeModal }) => {
         if (isFormValid() === false) return
 
         const handleResponse = (data: any) => {
+            setLoading(false);
             switch (true) {
                 case (data instanceof CanceledError):
                     return;
@@ -87,6 +90,7 @@ const AuthenticationForm: React.FC<Iprops> = ({ type, closeModal }) => {
 
 
         // check the type and call appropriate services
+        setLoading(true);
         switch (type) {
             // for login modal use login service
             case ("login"):
@@ -129,7 +133,8 @@ const AuthenticationForm: React.FC<Iprops> = ({ type, closeModal }) => {
             <ErrorMessage errorMessage={errorMessage} className={styles.errorMessage} />
 
             {/* submit button */}
-            <SecondaryButton children={formType} type="submit" className={`${styles.submit_button} ${errorMessage ? styles.errorMessage : ""}`} />
+            <SecondaryButton children={formType} type="submit" className={`${styles.submit_button} ${errorMessage ? styles.errorMessage : ""}`}
+                disabled={loading} />
         </form>
     );
 }

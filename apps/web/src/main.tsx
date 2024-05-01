@@ -8,6 +8,7 @@ import { Provider } from 'react-redux';
 import { store } from './store/index.ts';
 import { AuthTokenProvider } from './context/authTokens.tsx';
 import { UserStoriesProvider } from './context/userStories.tsx';
+import { LoaderContextProvider } from './context/loader.tsx';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
@@ -15,10 +16,11 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
       <AuthTokenProvider>
         <UserStoriesProvider>
 
-
-          <BrowserRouter>
-            <App />
-          </BrowserRouter>
+          <LoaderContextProvider>
+            <BrowserRouter>
+              <App />
+            </BrowserRouter>
+          </LoaderContextProvider>
 
         </UserStoriesProvider>
       </AuthTokenProvider>

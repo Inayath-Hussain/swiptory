@@ -8,6 +8,7 @@ import { useGetUserBookmarksQuery } from "@src/store/apiSlice/bookmarkApi";
 import { IStories } from "@src/store/apiSlice/storiesApi";
 
 import styles from "./Bookmark.module.css";
+import useLoader from "@src/hooks/useLoader";
 
 
 
@@ -20,6 +21,7 @@ const BookmarkPage = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
 
+    useLoader([loading]);
 
     useEffect(() => {
         const call = async () => {

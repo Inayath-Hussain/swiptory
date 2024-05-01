@@ -11,6 +11,7 @@ import { defaultUserStoriesQueryString, replaceUserStories } from "@src/store/ap
 import { storiesQuerySelector } from "@src/store/slices/storiesQuery";
 
 import styles from "./StoriesSection.module.css";
+import useLoader from "@src/hooks/useLoader";
 
 
 interface Iprops {
@@ -33,13 +34,18 @@ const StoriesSection: React.FC<Iprops> = ({ header, category, data, fetchAll, us
 
     const { queryString } = useSelector(storiesQuerySelector);
 
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState("");
 
+    useLoader([loading]);
 
     const getStoryData = (storyId: string) => data?.find(d => d._id === storyId)
 
 
     const handleFetchAll = async () => {
+        setLoading(true);
         const result = await fetchAll();
+        setLoading(false);
 
         switch (true) {
             case (result instanceof CanceledError):
@@ -53,10 +59,12 @@ const StoriesSection: React.FC<Iprops> = ({ header, category, data, fetchAll, us
 
             case (result instanceof ApiError):
                 // please try again later toast
+                setError(result.message);
                 return
 
 
             default:
+                setError("");
                 // if the component is of user stories section then extract the data accordingly
                 // setLocalData(userStory ? result.stories : result[category])
 
@@ -78,6 +86,7 @@ const StoriesSection: React.FC<Iprops> = ({ header, category, data, fetchAll, us
 
     const dataExists = data && data.length > 0
 
+
     return (
         <section className={styles.section_container}>
             <p className={styles.section_header}>{header}</p>
@@ -86,15 +95,16 @@ const StoriesSection: React.FC<Iprops> = ({ header, category, data, fetchAll, us
 
             <div className={styles.stories_container}>
                 {
-                    // add check if data.length is zero then display
-                    !dataExists ?
-                        <p className={styles.no_stories_text}>No stories Available</p>
+                    // if error exists show error
+                    error ?
+                        <p className={styles.no_stories_text}>{error}</p>
                         :
-                        null
-                }
 
-                {
-                    // add check if loading then show text Please wait fetching stories 
+                        // add check if data.length is zero then display
+                        !dataExists ?
+                            <p className={styles.no_stories_text}>No stories Available</p>
+                            :
+                            null
                 }
 
                 {
@@ -103,8 +113,8 @@ const StoriesSection: React.FC<Iprops> = ({ header, category, data, fetchAll, us
 
 
                 {
-                    // add check if data.length > 0 then display
 
+                    // data.length > 0 then display story cards
                     <>
                         {
                             dataExists ?
@@ -124,7 +134,8 @@ const StoriesSection: React.FC<Iprops> = ({ header, category, data, fetchAll, us
             {/* add check to display button only when data.length > 0 and fetchedAll is false */}
             {
                 (showMoreOption && dataExists && fetchedAll === false) ?
-                    <PrimaryButton children="See more" handleClick={handleFetchAll} className={styles.see_more_button} />
+                    <PrimaryButton children="See more" handleClick={handleFetchAll} className={styles.see_more_button}
+                        loading={loading} />
                     :
                     null
             }

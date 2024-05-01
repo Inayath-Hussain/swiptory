@@ -6,6 +6,7 @@ import { getUserStoriesService } from "@src/services/user/stories";
 import { defaultUserStoriesQueryString, useGetUserStoriesQuery } from "@src/store/apiSlice/userStoriesApi";
 
 import styles from "./YourStories.module.css";
+import useLoader from "@src/hooks/useLoader";
 
 
 /**
@@ -14,7 +15,9 @@ import styles from "./YourStories.module.css";
 const YourStoriesPage = () => {
 
     const { isLoggedIn } = useContext(authTokenContext);
-    const { data } = useGetUserStoriesQuery(defaultUserStoriesQueryString);
+    const { data, isFetching } = useGetUserStoriesQuery(defaultUserStoriesQueryString);
+
+    useLoader([isFetching])
 
     useEffect(() => {
         // open authentication modal

@@ -1,10 +1,11 @@
-import { useContext, useEffect } from "react"
+import { useContext, useEffect, useState } from "react"
 import { useDispatch } from "react-redux"
 
 import { authTokenContext } from "@src/context/authTokens"
 import { ApiError, CanceledError, UnauthorizedError } from "@src/services/errors"
 import { getUserProfileService } from "@src/services/user/profile"
 import { updateUserProfile } from "@src/store/slices/userProfile"
+import useLoader from "./useLoader"
 
 
 /**
@@ -15,10 +16,15 @@ const useGetUserProfile = () => {
     const { logout, isLoggedIn } = useContext(authTokenContext);
     const dispatch = useDispatch();
 
+    const [loading, setLoading] = useState(false);
+
+    useLoader([loading]);
 
     useEffect(() => {
         const call = async () => {
+            setLoading(true)
             const result = await getUserProfileService()
+            setLoading(false)
 
             switch (true) {
                 case (result instanceof CanceledError):
