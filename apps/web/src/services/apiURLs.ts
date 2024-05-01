@@ -23,6 +23,8 @@ export const apiURLs = {
 
     getBookmarks: "/api/user/bookmarks",
     addBookmark: "/api/story/addBookmark",
-    removeBookmark: "/api/story/removeBookmark"
+    removeBookmark: "/api/story/removeBookmark",
+
+    getBookmarkStories: "/api/user/bookmarkStories"
 
 }

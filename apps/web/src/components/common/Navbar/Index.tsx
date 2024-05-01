@@ -10,6 +10,8 @@ import styles from "./Index.module.css";
 import { authTokenContext } from "@src/context/authTokens";
 import AuthenticatedContent from "./AuthenticatedContent";
 import UnauthenticatedContent from "./UnauthenticatedContent";
+import { Link } from "react-router-dom";
+import { routes } from "@src/routes";
 
 
 const Navbar = () => {
@@ -30,9 +32,11 @@ const Navbar = () => {
 
             <div className={styles.main_container}>
 
-                <h1 className={styles.logo}>
-                    SwipTory
-                </h1>
+                <Link to={routes.home}>
+                    <h1 className={styles.logo}>
+                        SwipTory
+                    </h1>
+                </Link>
 
 
                 {

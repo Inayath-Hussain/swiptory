@@ -20,9 +20,11 @@ interface Iprops {
     fetchAll: () => Promise<any>
 
     userStory?: boolean
+
+    showMoreOption?: boolean
 }
 
-const StoriesSection: React.FC<Iprops> = ({ header, category, data, fetchAll, userStory = false }) => {
+const StoriesSection: React.FC<Iprops> = ({ header, category, data, fetchAll, userStory = false, showMoreOption = true }) => {
 
     const dispatch = useDispatch<AppDispatch>();
     const { logout } = useContext(authTokenContext);
@@ -121,7 +123,7 @@ const StoriesSection: React.FC<Iprops> = ({ header, category, data, fetchAll, us
 
             {/* add check to display button only when data.length > 0 and fetchedAll is false */}
             {
-                (dataExists && fetchedAll === false) ?
+                (showMoreOption && dataExists && fetchedAll === false) ?
                     <PrimaryButton children="See more" handleClick={handleFetchAll} className={styles.see_more_button} />
                     :
                     null

@@ -13,6 +13,8 @@ import useModal from "@src/hooks/useModal";
 import { userProfileSelector } from "@src/store/slices/userProfile";
 
 import styles from "./AuthenticatedContent.module.css";
+import { Link } from "react-router-dom";
+import { routes } from "@src/routes";
 
 
 interface Iprops {
@@ -54,9 +56,11 @@ const AuthenticatedContent: React.FC<Iprops> = ({ setOpen }) => {
 
             <PrimaryButton children="Add story" className={styles.button} handleClick={showModal} />
 
-            <PrimaryButton className={`${styles.button} ${styles.bookmark_button}`}>
-                <BookmarkIcon width={25} height={25} /> Bookmarks
-            </PrimaryButton>
+            <Link to={routes.bookmark}>
+                <PrimaryButton className={`${styles.button} ${styles.bookmark_button}`}>
+                    <BookmarkIcon width={25} height={25} /> Bookmarks
+                </PrimaryButton>
+            </Link>
 
 
             {isDesktop ? null : <PrimaryButton children="Logout" className={styles.button} handleClick={logout} />}
