@@ -7,7 +7,7 @@ const controller: RequestHandler = async (req, res, next) => {
 
     const bookmarks = await userBookmarkService.getUserBookmarks(user_id);
 
-    return res.status(200).json({ bookmarks });
+    return res.status(200).json(bookmarks);
 }
 
 

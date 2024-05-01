@@ -19,6 +19,10 @@ export const apiURLs = {
 
 
     likeStory: "/api/story/like",
-    unlikeStory: "/api/story/unlike"
+    unlikeStory: "/api/story/unlike",
+
+    getBookmarks: "/api/user/bookmarks",
+    addBookmark: "/api/story/addBookmark",
+    removeBookmark: "/api/story/removeBookmark"
 
 }

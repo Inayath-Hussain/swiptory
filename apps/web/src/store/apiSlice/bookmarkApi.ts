@@ -1,26 +1,27 @@
 import { AxiosError, HttpStatusCode } from "axios";
 
-import { baseApiSlice } from "./baseApiSlice";
 import { apiURLs } from "@src/services/apiURLs";
+import { baseApiSlice } from "./baseApiSlice";
 import { ApiError, CanceledError, UnauthorizedError } from "@src/services/errors";
 
 
-interface LikeOrUnlikeBody {
+interface IAddOrRemoveBookmarkBody {
     story_id: string
 }
 
 
-const userLikedStoriesApi = baseApiSlice.injectEndpoints({
-    endpoints: (builder) => ({
-        getUserLikedStories: builder.query<string[], void>({
-            query: () => ({ url: apiURLs.getUserLikedStories, method: "GET" }),
-            providesTags: ["User-Liked-Stories"]
+const bookmarkApi = baseApiSlice.injectEndpoints({
+    endpoints: builder => ({
+        getUserBookmarks: builder.query<string[], void>({
+            query: () => ({ url: apiURLs.getBookmarks, method: "GET" }),
+            providesTags: ["User-Bookmarks"]
         }),
 
 
-        likeStory: builder.mutation({
-            query: (payload: LikeOrUnlikeBody) => ({ url: apiURLs.likeStory, data: payload, method: "PUT" }),
-            invalidatesTags: ["User-Liked-Stories"],
+        addBookmark: builder.mutation({
+            query: (payload: IAddOrRemoveBookmarkBody) => ({ url: apiURLs.addBookmark, data: payload, method: "PUT" }),
+            invalidatesTags: (result, error) => error ? [] : ["User-Bookmarks"],
+
 
             transformErrorResponse(baseQueryReturnValue: AxiosError<any, any> | string, meta, arg): ApiError | CanceledError | UnauthorizedError {
                 if (baseQueryReturnValue instanceof AxiosError) {
@@ -42,9 +43,10 @@ const userLikedStoriesApi = baseApiSlice.injectEndpoints({
 
 
 
-        unlikeStory: builder.mutation({
-            query: (payload: LikeOrUnlikeBody) => ({ url: apiURLs.unlikeStory, data: payload, method: "PUT" }),
-            invalidatesTags: (result, error) => error ? [] : ["User-Liked-Stories"],
+
+        removeBookmark: builder.mutation({
+            query: (payload: IAddOrRemoveBookmarkBody) => ({ url: apiURLs.removeBookmark, data: payload, method: "PUT" }),
+            invalidatesTags: (result, error) => error ? [] : ["User-Bookmarks"],
 
             transformErrorResponse(baseQueryReturnValue: AxiosError<any, any> | string, meta, arg): ApiError | CanceledError | UnauthorizedError {
                 if (baseQueryReturnValue instanceof AxiosError) {
@@ -63,17 +65,11 @@ const userLikedStoriesApi = baseApiSlice.injectEndpoints({
                 return new ApiError("Please try again later");
             }
         })
+
     })
 })
 
 
 
-/**
- * store's empty array in redux for getUserLikedStories endpoint
- */
-export const resetUserLikedStoriesApi = () => userLikedStoriesApi.util.updateQueryData("getUserLikedStories", undefined, (data) => {
-    return [];
-})
 
-
-export const { useGetUserLikedStoriesQuery, useLikeStoryMutation, useUnlikeStoryMutation } = userLikedStoriesApi;
+export const { useGetUserBookmarksQuery, useAddBookmarkMutation, useRemoveBookmarkMutation } = bookmarkApi; 

@@ -1,4 +1,5 @@
 import { authTokenContext } from "@src/context/authTokens";
+import { useGetUserBookmarksQuery } from "@src/store/apiSlice/bookmarkApi";
 import { useGetUserLikedStoriesQuery } from "@src/store/apiSlice/userLikedStoriesApi";
 import { defaultUserStoriesQueryString, useGetUserStoriesQuery } from "@src/store/apiSlice/userStoriesApi";
 import { useContext, useEffect } from "react";
@@ -16,11 +17,14 @@ const useAuthenticatedQueries = () => {
 
     const { refetch: refetchUserLikedStories } = useGetUserLikedStoriesQuery(undefined, { skip });
 
+    const { refetch: refetchUserBookmarks } = useGetUserBookmarksQuery(undefined, { skip });
+
     useEffect(() => {
 
         if (isLoggedIn) {
             refetchUserStories();
             refetchUserLikedStories();
+            refetchUserBookmarks();
         };
 
     }, [isLoggedIn])

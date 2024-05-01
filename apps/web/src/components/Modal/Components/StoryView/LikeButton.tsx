@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import LikeIcon from "@src/components/Icons/Like";
@@ -6,7 +6,7 @@ import { authTokenContext } from "@src/context/authTokens";
 import { ApiError, CanceledError, UnauthorizedError } from "@src/services/errors";
 import { AppDispatch } from "@src/store";
 import { updateLike } from "@src/store/apiSlice/storiesApi";
-import { useLikeStoryMutation, useUnlikeStoryMutation } from "@src/store/apiSlice/userLikedStoriesApi";
+import { useGetUserLikedStoriesQuery, useLikeStoryMutation, useUnlikeStoryMutation } from "@src/store/apiSlice/userLikedStoriesApi";
 import { storiesQuerySelector } from "@src/store/slices/storiesQuery";
 
 import styles from "./LikeButton.module.css";
@@ -15,14 +15,12 @@ import { defaultUserStoriesQueryString, updateUserStoriesLike } from "@src/store
 
 
 interface Iprops {
-    liked: boolean
-
     likes: number
     category: string
     story_id: string
 }
 
-const LikeButton: React.FC<Iprops> = ({ liked, category, story_id, likes }) => {
+const LikeButton: React.FC<Iprops> = ({ category, story_id, likes }) => {
 
     const dispatch = useDispatch<AppDispatch>();
     const { queryString } = useSelector(storiesQuerySelector);
@@ -31,6 +29,22 @@ const LikeButton: React.FC<Iprops> = ({ liked, category, story_id, likes }) => {
 
     const [likeStory, { isLoading: likeStoryLoading }] = useLikeStoryMutation();
     const [unlikeStory, { isLoading: unlikeStoryLoading }] = useUnlikeStoryMutation();
+
+
+
+    const { data: userLikedStories } = useGetUserLikedStoriesQuery(undefined, { skip: isLoggedIn === false });
+
+
+    const checkLikedByUser = () => {
+        if (isLoggedIn === false || !userLikedStories) return false;
+
+        return userLikedStories.includes(story_id)
+    }
+
+    const isLikedByUser = useMemo(checkLikedByUser, [isLoggedIn, userLikedStories]);
+
+
+
 
     const handleLikeChange = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.stopPropagation();
@@ -72,14 +86,14 @@ const LikeButton: React.FC<Iprops> = ({ liked, category, story_id, likes }) => {
         }
 
         switch (true) {
-            case (liked === false):
+            case (isLikedByUser === false):
                 likeStory({ story_id }).unwrap()
                     .then(() => onSuccess("increase"))
                     .catch(onError)
                 return
 
 
-            case (liked):
+            case (isLikedByUser):
                 unlikeStory({ story_id }).unwrap()
                     .then(() => onSuccess("decrease"))
                     .catch(onError)
@@ -91,7 +105,7 @@ const LikeButton: React.FC<Iprops> = ({ liked, category, story_id, likes }) => {
 
 
 
-    const likeColor = liked ? "#FF0000" : "#fff";
+    const likeColor = isLikedByUser ? "#FF0000" : "#fff";
 
     return (
         <div className={styles.like_container}>

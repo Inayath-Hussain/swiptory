@@ -1,7 +1,7 @@
 import { useState } from "react";
 
-import BookmarkIcon from "@src/components/Icons/Bookmark";
 import LikeButton from "./LikeButton";
+import BookmarkButton from "./BookmarkButton";
 
 import styles from "./BottomSection.module.css";
 
@@ -13,11 +13,9 @@ interface Iprops {
     category: string
 
     likes: number
-
-    liked: boolean
 }
 
-const BottomSection: React.FC<Iprops> = ({ description, heading, likes, liked, story_id, category }) => {
+const BottomSection: React.FC<Iprops> = ({ description, heading, likes, story_id, category }) => {
 
     const [showMore, setShowMore] = useState(false);
 
@@ -32,9 +30,7 @@ const BottomSection: React.FC<Iprops> = ({ description, heading, likes, liked, s
 
 
 
-    const textClass = (className: string) => showMore ? `${className} ${styles.show_full}` : className
-
-    const bookmarkColor = "#fff";
+    const textClass = (className: string) => showMore ? `${className} ${styles.show_full}` : className;
 
 
     return (
@@ -48,13 +44,11 @@ const BottomSection: React.FC<Iprops> = ({ description, heading, likes, liked, s
             <div className={styles.bottom_buttons_container}>
 
 
-                <button>
-                    <BookmarkIcon fill={bookmarkColor} className={styles.button_icon} />
-                </button>
+                <BookmarkButton story_id={story_id} />
 
 
 
-                <LikeButton category={category} liked={liked} likes={likes} story_id={story_id} />
+                <LikeButton category={category} likes={likes} story_id={story_id} />
 
             </div>
 

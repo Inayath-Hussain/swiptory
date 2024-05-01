@@ -5,16 +5,15 @@ import { Outlet } from "react-router-dom";
 import CategoriesFilter from "@src/components/common/CategoriesFilter";
 import StoriesSection from "@src/components/Home/StoriesSection";
 import { authTokenContext } from "@src/context/authTokens";
+import { userStoriesContext } from "@src/context/userStories";
 import useDeviceWidth from "@src/hooks/useDeviceWidth";
 import { getAllStoriesOfCategoy } from "@src/services/story/getAllStoriesOfCategory";
 import { getUserStoriesService } from "@src/services/user/stories";
-import { useGetUserStoriesQuery } from "@src/store/apiSlice/userStoriesApi";
 import { categoriesSelector } from "@src/store/slices/categories";
 import { useGetStoriesQuery } from "@src/store/apiSlice/storiesApi";
 import { storiesQuerySelector } from "@src/store/slices/storiesQuery";
 
 import styles from "./Home.module.css";
-import { userStoriesContext } from "@src/context/userStories";
 
 
 const HomePage = () => {

@@ -1,4 +1,4 @@
-import { useContext, useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import BottomSection from "../Components/StoryView/BottomSection";
 import CloseAndShare from "../Components/StoryView/CloseAndShare";
@@ -9,8 +9,6 @@ import useDeviceWidth from "@src/hooks/useDeviceWidth";
 import { IStories } from "@src/store/apiSlice/storiesApi";
 
 import styles from "./StoryView.module.css";
-import { authTokenContext } from "@src/context/authTokens";
-import { useGetUserLikedStoriesQuery } from "@src/store/apiSlice/userLikedStoriesApi";
 
 
 
@@ -24,8 +22,6 @@ interface Iprops {
 const StoryView: React.FC<Iprops> = ({ data, closeModal }) => {
 
     const { isDesktop } = useDeviceWidth();
-    const { isLoggedIn } = useContext(authTokenContext);
-    const { data: userLikedStories } = useGetUserLikedStoriesQuery(undefined, { skip: isLoggedIn === false });
 
     const timeoutIDRef = useRef<NodeJS.Timeout | null>();
     const images = useMemo(() => data.slides.map(d => ({ url: d.image })), [data])
@@ -116,14 +112,6 @@ const StoryView: React.FC<Iprops> = ({ data, closeModal }) => {
 
 
 
-    const checkLikedByUser = () => {
-        if (isLoggedIn === false || !userLikedStories) return false;
-
-        return userLikedStories.includes(data._id)
-    }
-
-    const isLikedByUser = useMemo(checkLikedByUser, [isLoggedIn, userLikedStories]);
-
 
     return (
         // story view container
@@ -163,7 +151,7 @@ const StoryView: React.FC<Iprops> = ({ data, closeModal }) => {
 
 
                 <BottomSection story_id={data._id} category={data.category} heading={data.slides[currentIndex].heading} description={data.slides[currentIndex].description}
-                    likes={data.likes} liked={isLikedByUser} />
+                    likes={data.likes} />
             </div>
 
 
