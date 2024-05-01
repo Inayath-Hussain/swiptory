@@ -145,7 +145,7 @@ const StoryView: React.FC<Iprops> = ({ data, closeModal, showLoginForm }) => {
                     <ProgressBar totalSlides={data.slides.length} currentIndex={currentIndex}
                         startAnimation={startAnimation} reachedEnd={reachedEnd} />
 
-                    <CloseAndShare close={closeModal} />
+                    <CloseAndShare close={closeModal} story_id={data._id} />
                 </div>
 
                 <img src={data.slides[currentIndex].image} alt="" onLoad={onLoad} className={styles.image} />

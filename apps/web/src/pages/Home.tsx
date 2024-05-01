@@ -6,6 +6,7 @@ import StoriesSection from "@src/components/Home/StoriesSection";
 import { authTokenContext } from "@src/context/authTokens";
 import { userStoriesContext } from "@src/context/userStories";
 import useDeviceWidth from "@src/hooks/useDeviceWidth";
+import useSharedStory from "@src/hooks/useSharedStory";
 import { getAllStoriesOfCategoy } from "@src/services/story/getAllStoriesOfCategory";
 import { getUserStoriesService } from "@src/services/user/stories";
 import { categoriesSelector } from "@src/store/slices/categories";
@@ -13,9 +14,17 @@ import { useGetStoriesQuery } from "@src/store/apiSlice/storiesApi";
 import { storiesQuerySelector } from "@src/store/slices/storiesQuery";
 
 import styles from "./Home.module.css";
+import StoryView from "@src/components/Modal/Content/StoryView";
+import useModal from "@src/hooks/useModal";
+import { loginFormContext } from "@src/context/loginForm";
 
 
 const HomePage = () => {
+
+    const { ModalPortal: StoryViewModal, hideModal: hideStoryView, showModal } = useModal();
+    const { showLoginForm } = useContext(loginFormContext);
+    const { storyData } = useSharedStory(showModal);
+
 
     const { isDesktop } = useDeviceWidth();
     const { isLoggedIn } = useContext(authTokenContext);
@@ -70,6 +79,13 @@ const HomePage = () => {
                         :
                         null
                 }
+
+                {
+                    storyData ? StoryViewModal(<StoryView data={storyData} closeModal={hideStoryView} showLoginForm={showLoginForm} />, false)
+                        :
+                        null
+                }
+
             </main>
         </>
     );

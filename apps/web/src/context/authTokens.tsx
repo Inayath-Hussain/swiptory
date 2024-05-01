@@ -43,7 +43,6 @@ export const AuthTokenProvider: React.FC<PropsWithChildren> = ({ children }) => 
     }
 
     const isLoggedIn = Boolean(accessToken || refreshToken)
-    console.log(accessToken, isLoggedIn)
 
     return (
         <authTokenContext.Provider value={{ accessToken: accessToken || "", refreshToken: refreshToken || "", isLoggedIn, logout }}>
