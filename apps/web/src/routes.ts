@@ -1,4 +1,6 @@
 export const routes = {
     home: "/",
-    bookmark: "/bookmark"
+    bookmark: "/bookmark",
+
+    yourStories: "/your stories"
 }

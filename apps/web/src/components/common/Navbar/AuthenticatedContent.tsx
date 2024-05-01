@@ -52,11 +52,17 @@ const AuthenticatedContent: React.FC<Iprops> = ({ setOpen }) => {
             </div>
 
 
-            {isDesktop ? null : <PrimaryButton children="Your Story" className={styles.button} />}
+            {isDesktop ? null :
+                <Link to={routes.yourStories} className={styles.link}>
+                    <PrimaryButton children="Your Story" className={styles.button} />
+                </Link>}
+
 
             <PrimaryButton children="Add story" className={styles.button} handleClick={showModal} />
 
-            <Link to={routes.bookmark}>
+
+            {/* bookmark link */}
+            <Link to={routes.bookmark} className={styles.link}>
                 <PrimaryButton className={`${styles.button} ${styles.bookmark_button}`}>
                     <BookmarkIcon width={25} height={25} /> Bookmarks
                 </PrimaryButton>

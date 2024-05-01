@@ -1,6 +1,5 @@
 import { useContext } from "react";
 import { useSelector } from "react-redux";
-import { Outlet } from "react-router-dom";
 
 import CategoriesFilter from "@src/components/common/CategoriesFilter";
 import StoriesSection from "@src/components/Home/StoriesSection";

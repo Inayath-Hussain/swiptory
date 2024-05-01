@@ -1,4 +1,3 @@
-import { useContext } from 'react';
 import { useSelector } from 'react-redux';
 import { Route, Routes } from 'react-router-dom';
 
@@ -8,15 +7,17 @@ import { routes } from './routes';
 import HomePage from './pages/Home';
 import { useGetStoriesQuery } from './store/apiSlice/storiesApi';
 import { storiesQuerySelector } from './store/slices/storiesQuery';
-import { authTokenContext } from './context/authTokens';
 import useGetUserProfile from './hooks/useGetUserProfile';
 import useAuthenticatedQueries from './hooks/useAuthenticatedQueries';
 import BookmarkPage from './pages/Bookmark';
+import useDeviceWidth from './hooks/useDeviceWidth';
+import YourStoriesPage from './pages/YourStories';
 
 
 function App() {
 
-  const { isLoggedIn } = useContext(authTokenContext);
+  const { isDesktop } = useDeviceWidth();
+
   const { queryString } = useSelector(storiesQuerySelector);
 
   useGetCategories();
@@ -36,11 +37,16 @@ function App() {
       <Navbar />
 
       <Routes>
-        <Route path={routes.home} element={<HomePage />}>
-
-        </Route>
+        <Route path={routes.home} element={<HomePage />} />
 
         <Route path={routes.bookmark} element={<BookmarkPage />} />
+
+        {
+          isDesktop === false ?
+            <Route path={routes.yourStories} element={<YourStoriesPage />} />
+            :
+            null
+        }
 
       </Routes>
     </>

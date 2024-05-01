@@ -20,6 +20,12 @@
     height: 1.4rem;
 }
 
+
+.link {
+    align-self: center;
+}
+
+
 .name {
     font-weight: 700;
     font-size: 1.1rem;
