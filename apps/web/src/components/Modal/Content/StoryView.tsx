@@ -15,11 +15,12 @@ import styles from "./StoryView.module.css";
 interface Iprops {
     data: IStories[string][number]
 
+    showLoginForm: () => void
     closeModal: () => void
 }
 
 
-const StoryView: React.FC<Iprops> = ({ data, closeModal }) => {
+const StoryView: React.FC<Iprops> = ({ data, closeModal, showLoginForm }) => {
 
     const { isDesktop } = useDeviceWidth();
 
@@ -151,7 +152,7 @@ const StoryView: React.FC<Iprops> = ({ data, closeModal }) => {
 
 
                 <BottomSection story_id={data._id} category={data.category} heading={data.slides[currentIndex].heading} description={data.slides[currentIndex].description}
-                    likes={data.likes} />
+                    likes={data.likes} showLoginForm={showLoginForm} />
             </div>
 
 

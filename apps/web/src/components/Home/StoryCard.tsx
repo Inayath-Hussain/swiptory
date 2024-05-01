@@ -8,6 +8,7 @@ import useModal from "@src/hooks/useModal";
 import { IStories } from "@src/store/apiSlice/storiesApi";
 import StoryForm from "../Modal/Content/StoryForm";
 import StoryView from "../Modal/Content/StoryView";
+import { loginFormContext } from "@src/context/loginForm";
 
 interface Iprops {
     data: {
@@ -23,7 +24,9 @@ interface Iprops {
 
 const StoryCard: React.FC<Iprops> = ({ data, story_id, getStoryData }) => {
 
-    const { ModalPortal, hideModal, showModal } = useModal();
+    const { showLoginForm } = useContext(loginFormContext);
+
+    const { ModalPortal: EditStoryModal, hideModal: hideEditStoryModal, showModal: showEditStoryModal } = useModal();
     const { ModalPortal: StoryViewModal, hideModal: hideStoryView, showModal: showStoryView } = useModal();
 
     const { data: userStories } = useContext(userStoriesContext);
@@ -46,7 +49,7 @@ const StoryCard: React.FC<Iprops> = ({ data, story_id, getStoryData }) => {
 
                 {
                     isUserStory ?
-                        <button className={styles.edit_button} onClick={showModal}>
+                        <button className={styles.edit_button} onClick={showEditStoryModal}>
                             <img src={EditIcon} alt="" className={styles.edit_image} />
                             Edit
                         </button>
@@ -55,9 +58,9 @@ const StoryCard: React.FC<Iprops> = ({ data, story_id, getStoryData }) => {
                 }
             </div>
 
-            {ModalPortal(<StoryForm closeModal={hideModal} type="edit" data={getStoryData(story_id)} />)}
+            {EditStoryModal(<StoryForm closeModal={hideEditStoryModal} type="edit" data={getStoryData(story_id)} />)}
 
-            {StoryViewModal(<StoryView data={getStoryData(story_id) as IStories[string][number]} closeModal={hideStoryView} />, false)}
+            {StoryViewModal(<StoryView data={getStoryData(story_id) as IStories[string][number]} closeModal={hideStoryView} showLoginForm={showLoginForm} />, false)}
         </>
     );
 }

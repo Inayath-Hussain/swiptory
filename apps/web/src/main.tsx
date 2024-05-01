@@ -9,6 +9,7 @@ import { store } from './store/index.ts';
 import { AuthTokenProvider } from './context/authTokens.tsx';
 import { UserStoriesProvider } from './context/userStories.tsx';
 import { LoaderContextProvider } from './context/loader.tsx';
+import { LoginFormContextProvider } from './context/loginForm.tsx';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
@@ -16,11 +17,13 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
       <AuthTokenProvider>
         <UserStoriesProvider>
 
-          <LoaderContextProvider>
-            <BrowserRouter>
-              <App />
-            </BrowserRouter>
-          </LoaderContextProvider>
+          <LoginFormContextProvider>
+            <LoaderContextProvider>
+              <BrowserRouter>
+                <App />
+              </BrowserRouter>
+            </LoaderContextProvider>
+          </LoginFormContextProvider>
 
         </UserStoriesProvider>
       </AuthTokenProvider>

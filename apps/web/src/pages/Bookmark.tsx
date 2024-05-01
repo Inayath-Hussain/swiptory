@@ -9,10 +9,14 @@ import { IStories } from "@src/store/apiSlice/storiesApi";
 
 import styles from "./Bookmark.module.css";
 import useLoader from "@src/hooks/useLoader";
+import { loginFormContext } from "@src/context/loginForm";
 
 
 
 const BookmarkPage = () => {
+
+    const { isLoggedIn } = useContext(authTokenContext);
+    const { showLoginForm } = useContext(loginFormContext);
 
     const { logout } = useContext(authTokenContext);
     const { data: userBookmarkIds } = useGetUserBookmarksQuery();
@@ -22,6 +26,12 @@ const BookmarkPage = () => {
     const [error, setError] = useState("");
 
     useLoader([loading]);
+
+
+    useEffect(() => {
+        if (isLoggedIn === false) showLoginForm()
+    }, [isLoggedIn])
+
 
     useEffect(() => {
         const call = async () => {
@@ -33,8 +43,9 @@ const BookmarkPage = () => {
 
             switch (true) {
                 case (result instanceof UnauthorizedError):
-                    // please login again
+                    // please login again toast
                     logout();
+                    showLoginForm();
                     setError("Please login again");
                     break;
 

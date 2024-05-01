@@ -18,9 +18,11 @@ interface Iprops {
     likes: number
     category: string
     story_id: string
+
+    showLoginForm: () => void
 }
 
-const LikeButton: React.FC<Iprops> = ({ category, story_id, likes }) => {
+const LikeButton: React.FC<Iprops> = ({ category, story_id, likes, showLoginForm }) => {
 
     const dispatch = useDispatch<AppDispatch>();
     const { queryString } = useSelector(storiesQuerySelector);
@@ -50,7 +52,7 @@ const LikeButton: React.FC<Iprops> = ({ category, story_id, likes }) => {
         e.stopPropagation();
 
         if (isLoggedIn === false) {
-            // open auth modal
+            showLoginForm();
             return
         }
 
@@ -75,7 +77,7 @@ const LikeButton: React.FC<Iprops> = ({ category, story_id, likes }) => {
 
                 case (err instanceof UnauthorizedError):
                     // please login again toast
-                    // closeModal()
+                    showLoginForm();
                     return
 
                 default:

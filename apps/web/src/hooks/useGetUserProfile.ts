@@ -33,6 +33,7 @@ const useGetUserProfile = () => {
                 case (result instanceof UnauthorizedError):
                     logout();
                     // please login again toast here
+
                     return
 
                 case (result instanceof ApiError):

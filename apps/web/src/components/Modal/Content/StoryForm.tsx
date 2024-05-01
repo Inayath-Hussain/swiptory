@@ -1,4 +1,4 @@
-import { FormEventHandler, useEffect, useMemo, useState } from "react";
+import { FormEventHandler, useContext, useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 
 import SlideDetail from "../Components/StoryForm/SlideDetail";
@@ -16,6 +16,7 @@ import { categoriesSelector } from "@src/store/slices/categories";
 
 
 import styles from "./StoryForm.module.css";
+import { loginFormContext } from "@src/context/loginForm";
 
 
 type StoryData = Omit<IStories[string][number], "createdAt"> // _id, slides, category
@@ -36,6 +37,7 @@ const StoryForm: React.FC<Iprops> = ({ data: dataProp = undefined, closeModal, c
 
     const [edit, { isLoading: isEditLoading }] = useEditStoryMutation();
 
+    const { showLoginForm } = useContext(loginFormContext);
     const { isDesktop } = useDeviceWidth();
     const { isOnline } = useOnline();
     const { categories } = useSelector(categoriesSelector);
@@ -211,7 +213,7 @@ const StoryForm: React.FC<Iprops> = ({ data: dataProp = undefined, closeModal, c
 
                 case (err instanceof UnauthorizedError):
                     // please login again toast
-                    closeModal()
+                    showLoginForm();
                     return
 
                 default:

@@ -7,6 +7,7 @@ import { defaultUserStoriesQueryString, useGetUserStoriesQuery } from "@src/stor
 
 import styles from "./YourStories.module.css";
 import useLoader from "@src/hooks/useLoader";
+import { loginFormContext } from "@src/context/loginForm";
 
 
 /**
@@ -15,12 +16,15 @@ import useLoader from "@src/hooks/useLoader";
 const YourStoriesPage = () => {
 
     const { isLoggedIn } = useContext(authTokenContext);
+    const { showLoginForm } = useContext(loginFormContext);
+
     const { data, isFetching } = useGetUserStoriesQuery(defaultUserStoriesQueryString);
 
     useLoader([isFetching])
 
     useEffect(() => {
         // open authentication modal
+        if (isLoggedIn === false) showLoginForm();
     }, [isLoggedIn])
 
     const fetchAllUserStories = () => getUserStoriesService();

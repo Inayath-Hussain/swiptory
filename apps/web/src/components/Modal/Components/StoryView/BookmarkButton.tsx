@@ -10,10 +10,11 @@ import styles from "./BookmarkButton.module.css";
 
 interface Iprops {
     story_id: string
+    showLoginForm: () => void
 }
 
 
-const BookmarkButton: React.FC<Iprops> = ({ story_id }) => {
+const BookmarkButton: React.FC<Iprops> = ({ story_id, showLoginForm }) => {
 
     const { isLoggedIn } = useContext(authTokenContext);
 
@@ -36,6 +37,10 @@ const BookmarkButton: React.FC<Iprops> = ({ story_id }) => {
     const handleBookmarkChange = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.stopPropagation();
 
+        if (isLoggedIn === false) {
+            showLoginForm();
+            return
+        }
 
         const onError = (err: any) => {
             switch (true) {
@@ -48,7 +53,7 @@ const BookmarkButton: React.FC<Iprops> = ({ story_id }) => {
 
                 case (err instanceof UnauthorizedError):
                     // please login again toast
-                    // closeModal()
+                    showLoginForm()
                     return
 
                 default:

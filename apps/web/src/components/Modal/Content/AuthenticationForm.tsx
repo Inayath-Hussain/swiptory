@@ -82,7 +82,7 @@ const AuthenticationForm: React.FC<Iprops> = ({ type, closeModal }) => {
 
 
                 default:
-                // closeModal();
+                    closeModal();
                 // onSubmitCallback();
             }
         }

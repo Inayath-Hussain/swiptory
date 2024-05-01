@@ -12,6 +12,7 @@ import { storiesQuerySelector } from "@src/store/slices/storiesQuery";
 
 import styles from "./StoriesSection.module.css";
 import useLoader from "@src/hooks/useLoader";
+import { loginFormContext } from "@src/context/loginForm";
 
 
 interface Iprops {
@@ -26,6 +27,8 @@ interface Iprops {
 }
 
 const StoriesSection: React.FC<Iprops> = ({ header, category, data, fetchAll, userStory = false, showMoreOption = true }) => {
+
+    const { showLoginForm } = useContext(loginFormContext);
 
     const dispatch = useDispatch<AppDispatch>();
     const { logout } = useContext(authTokenContext);
@@ -54,7 +57,7 @@ const StoriesSection: React.FC<Iprops> = ({ header, category, data, fetchAll, us
             case (userStory && result instanceof UnauthorizedError):
                 logout();
                 // please login again toast
-                // open login modal
+                showLoginForm();
                 return
 
             case (result instanceof ApiError):

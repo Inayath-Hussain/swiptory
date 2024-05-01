@@ -12,10 +12,11 @@ interface Iprops {
     description: string
     category: string
 
+    showLoginForm: () => void
     likes: number
 }
 
-const BottomSection: React.FC<Iprops> = ({ description, heading, likes, story_id, category }) => {
+const BottomSection: React.FC<Iprops> = ({ description, heading, likes, story_id, category, showLoginForm }) => {
 
     const [showMore, setShowMore] = useState(false);
 
@@ -44,11 +45,10 @@ const BottomSection: React.FC<Iprops> = ({ description, heading, likes, story_id
             <div className={styles.bottom_buttons_container}>
 
 
-                <BookmarkButton story_id={story_id} />
+                <BookmarkButton story_id={story_id} showLoginForm={showLoginForm} />
 
 
-
-                <LikeButton category={category} likes={likes} story_id={story_id} />
+                <LikeButton category={category} likes={likes} story_id={story_id} showLoginForm={showLoginForm} />
 
             </div>
 
