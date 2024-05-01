@@ -48,6 +48,16 @@ class UserBookmarkService {
 
         return await doc.save();
     }
+
+
+
+    async getUserBookmarkStories(limit: number | undefined, user_id: string) {
+        const doc = await UserBookmarks.findOne({ user: user_id }, { stories: 1 }, { limit }).populate("stories", { created_by: 0, updatedAt: 0 });
+
+        if (doc === null) return [];
+
+        return doc.stories;
+    }
 }
 
 

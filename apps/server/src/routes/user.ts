@@ -8,6 +8,7 @@ import { validateAuthRequestBody } from "../middlewares/user/validateAuthRequest
 import { authMiddleware } from "../middlewares/auth/authMiddleware";
 import { getUserLikedStoriesController } from "../controllers/user/likedStories";
 import { getUserBookmarksController } from "../controllers/user/getBookmarks";
+import { getBookmarkStoriesController } from "../controllers/user/getBookmarkStories";
 
 const router = Router();
 
@@ -23,6 +24,8 @@ router.get("/stories", authMiddleware, getUserStoriesController);
 router.get("/likedStories", authMiddleware, getUserLikedStoriesController);
 
 router.get("/bookmarks", authMiddleware, getUserBookmarksController);
+
+router.get("/bookmarkStories", authMiddleware, getBookmarkStoriesController);
 
 
 export { router as userRouter }
