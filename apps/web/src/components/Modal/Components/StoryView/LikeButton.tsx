@@ -1,16 +1,17 @@
 import { useContext, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import toast from "react-hot-toast";
 
 import LikeIcon from "@src/components/Icons/Like";
 import { authTokenContext } from "@src/context/authTokens";
 import { ApiError, CanceledError, UnauthorizedError } from "@src/services/errors";
 import { AppDispatch } from "@src/store";
 import { updateLike } from "@src/store/apiSlice/storiesApi";
-import { useGetUserLikedStoriesQuery, useLikeStoryMutation, useUnlikeStoryMutation } from "@src/store/apiSlice/userLikedStoriesApi";
 import { storiesQuerySelector } from "@src/store/slices/storiesQuery";
+import { useGetUserLikedStoriesQuery, useLikeStoryMutation, useUnlikeStoryMutation } from "@src/store/apiSlice/userLikedStoriesApi";
+import { defaultUserStoriesQueryString, updateUserStoriesLike } from "@src/store/apiSlice/userStoriesApi";
 
 import styles from "./LikeButton.module.css";
-import { defaultUserStoriesQueryString, updateUserStoriesLike } from "@src/store/apiSlice/userStoriesApi";
 
 
 
@@ -72,17 +73,16 @@ const LikeButton: React.FC<Iprops> = ({ category, story_id, likes, showLoginForm
                     return
 
                 case (err instanceof ApiError):
-                    // toast err.message
+                    toast(err.message)
                     return
 
                 case (err instanceof UnauthorizedError):
-                    // please login again toast
+                    toast("please login again")
                     showLoginForm();
                     return
 
                 default:
-                    // setError(err)
-                    // toast err
+                    toast(err)
                     return
             }
         }

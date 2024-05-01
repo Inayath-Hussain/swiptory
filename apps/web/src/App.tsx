@@ -1,5 +1,6 @@
 import { useSelector } from 'react-redux';
 import { Route, Routes } from 'react-router-dom';
+import toast, { Toaster } from 'react-hot-toast';
 
 import Navbar from './components/common/Navbar/Index';
 import useGetCategories from './hooks/useGetCategories';
@@ -13,6 +14,7 @@ import BookmarkPage from './pages/Bookmark';
 import useDeviceWidth from './hooks/useDeviceWidth';
 import YourStoriesPage from './pages/YourStories';
 import useLoader from './hooks/useLoader';
+import { useEffect } from 'react';
 
 
 function App() {
@@ -22,7 +24,12 @@ function App() {
   const { queryString } = useSelector(storiesQuerySelector);
 
   useGetCategories();
-  const { isFetching: getStoriesQueryLoading } = useGetStoriesQuery(queryString, { refetchOnMountOrArgChange: true });
+
+
+  const { isFetching: getStoriesQueryLoading, isError } = useGetStoriesQuery(queryString, { refetchOnMountOrArgChange: true });
+  useEffect(() => {
+    if (isError) toast("Failed to get stories. Please try again later")
+  }, [isError])
 
 
   // fetch profile info when user is authenticated
@@ -52,6 +59,9 @@ function App() {
         }
 
       </Routes>
+
+
+      <Toaster />
     </>
   )
 }

@@ -1,4 +1,5 @@
 import { useContext, useMemo } from "react";
+import toast from "react-hot-toast";
 
 import BookmarkIcon from "@src/components/Icons/Bookmark";
 import { authTokenContext } from "@src/context/authTokens";
@@ -48,17 +49,16 @@ const BookmarkButton: React.FC<Iprops> = ({ story_id, showLoginForm }) => {
                     return
 
                 case (err instanceof ApiError):
-                    // toast err.message
+                    toast(err.message)
                     return
 
                 case (err instanceof UnauthorizedError):
-                    // please login again toast
+                    toast("please login again")
                     showLoginForm()
                     return
 
                 default:
-                    // setError(err)
-                    // toast err
+                    toast(err)
                     return
             }
         }

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import toast from "react-hot-toast";
 
 import { ApiError } from "@src/services/errors";
 import { getStoryByIdService } from "@src/services/story/getStoryById";
@@ -20,7 +21,7 @@ const useSharedStory = (showModal: () => void) => {
             const result = await getStoryByIdService(id);
 
             if (result instanceof ApiError) {
-                // toast result.message
+                toast(result.message)
                 return;
             }
 

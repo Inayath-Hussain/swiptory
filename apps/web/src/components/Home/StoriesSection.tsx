@@ -1,9 +1,12 @@
 import { useContext, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import toast from "react-hot-toast";
 
 import StoryCard from "./StoryCard";
 import PrimaryButton from "../common/PrimaryButton";
 import { authTokenContext } from "@src/context/authTokens";
+import { loginFormContext } from "@src/context/loginForm";
+import useLoader from "@src/hooks/useLoader";
 import { ApiError, CanceledError, UnauthorizedError } from "@src/services/errors";
 import { AppDispatch } from "@src/store";
 import { IStories, addMoreStories } from "@src/store/apiSlice/storiesApi";
@@ -11,8 +14,6 @@ import { defaultUserStoriesQueryString, replaceUserStories } from "@src/store/ap
 import { storiesQuerySelector } from "@src/store/slices/storiesQuery";
 
 import styles from "./StoriesSection.module.css";
-import useLoader from "@src/hooks/useLoader";
-import { loginFormContext } from "@src/context/loginForm";
 
 
 interface Iprops {
@@ -56,12 +57,12 @@ const StoriesSection: React.FC<Iprops> = ({ header, category, data, fetchAll, us
 
             case (userStory && result instanceof UnauthorizedError):
                 logout();
-                // please login again toast
+                toast("please login again")
                 showLoginForm();
                 return
 
             case (result instanceof ApiError):
-                // please try again later toast
+                toast("please try again later")
                 setError(result.message);
                 return
 
@@ -69,8 +70,6 @@ const StoriesSection: React.FC<Iprops> = ({ header, category, data, fetchAll, us
             default:
                 setError("");
                 // if the component is of user stories section then extract the data accordingly
-                // setLocalData(userStory ? result.stories : result[category])
-
                 switch (userStory) {
                     case (true):
                         dispatch(replaceUserStories(defaultUserStoriesQueryString, result.stories))

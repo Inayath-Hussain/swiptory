@@ -1,11 +1,13 @@
 import { useContext, useEffect, useState } from "react"
 import { useDispatch } from "react-redux"
+import toast from "react-hot-toast"
 
 import { authTokenContext } from "@src/context/authTokens"
 import { ApiError, CanceledError, UnauthorizedError } from "@src/services/errors"
 import { getUserProfileService } from "@src/services/user/profile"
 import { updateUserProfile } from "@src/store/slices/userProfile"
 import useLoader from "./useLoader"
+import { loginFormContext } from "@src/context/loginForm"
 
 
 /**
@@ -16,6 +18,7 @@ const useGetUserProfile = () => {
     const { logout, isLoggedIn } = useContext(authTokenContext);
     const dispatch = useDispatch();
 
+    const { showLoginForm } = useContext(loginFormContext);
     const [loading, setLoading] = useState(false);
 
     useLoader([loading]);
@@ -32,7 +35,8 @@ const useGetUserProfile = () => {
 
                 case (result instanceof UnauthorizedError):
                     logout();
-                    // please login again toast here
+                    toast("please login again")
+                    showLoginForm();
 
                     return
 

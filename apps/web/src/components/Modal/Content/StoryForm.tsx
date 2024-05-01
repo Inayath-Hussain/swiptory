@@ -17,6 +17,7 @@ import { categoriesSelector } from "@src/store/slices/categories";
 
 import styles from "./StoryForm.module.css";
 import { loginFormContext } from "@src/context/loginForm";
+import toast from "react-hot-toast";
 
 
 type StoryData = Omit<IStories[string][number], "createdAt"> // _id, slides, category
@@ -212,7 +213,7 @@ const StoryForm: React.FC<Iprops> = ({ data: dataProp = undefined, closeModal, c
                     return setError(err.message)
 
                 case (err instanceof UnauthorizedError):
-                    // please login again toast
+                    toast("please login again")
                     showLoginForm();
                     return
 
