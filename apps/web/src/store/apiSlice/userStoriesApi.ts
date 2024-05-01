@@ -36,4 +36,38 @@ export const resetUserStoriesApiSlice = (queryString: string) => userStoriesApiS
 })
 
 
+
+
+/**
+ * replaces the present user stories with provided stories
+ * @param queryString key used to get user stories
+ * @param payload array of stories
+ * @returns 
+ */
+export const replaceUserStories = (queryString: string, payload: GetUserStoriesResult["stories"]) =>
+    userStoriesApiSlice.util.updateQueryData("getUserStories", queryString, (data) => {
+        return payload;
+    })
+
+
+
+
+/**
+ * update like of story posted by user
+ * @param queryString key used to get user stories
+ * @param story_id id of interacted story
+ * @param type "increase" when user liked the story, "decrease" when user unliked the story
+ */
+export const updateUserStoriesLike = (queryString: string, story_id: string, type: "increase" | "decrease") =>
+    userStoriesApiSlice.util.updateQueryData("getUserStories", queryString, (data) => {
+        const index = data.findIndex(d => d._id === story_id)
+
+        if (index === -1) return data;
+        data[index].likes = type === "increase" ? data[index].likes + 1 : data[index].likes - 1;
+
+        return data;
+    })
+
+
+
 export const { useGetUserStoriesQuery } = userStoriesApiSlice;

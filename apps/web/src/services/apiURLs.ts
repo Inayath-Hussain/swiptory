@@ -13,6 +13,12 @@ export const apiURLs = {
 
     getUserStories: "/api/user/stories",
 
-    editPostStory: "/api/story"
+    editPostStory: "/api/story",
+
+    getUserLikedStories: "/api/user/likedStories",
+
+
+    likeStory: "/api/story/like",
+    unlikeStory: "/api/story/unlike"
 
 }

@@ -1,9 +1,8 @@
 import { AxiosError, HttpStatusCode } from "axios";
 
 import { apiURLs } from "../apiURLs";
-import { axiosInstance } from "../instance";
 import { ApiError, CanceledError, UnauthorizedError } from "../errors";
-import { createQueryString } from "@src/utilities/createQueryString";
+import { axiosInstance } from "../instance";
 
 
 interface Slide {
@@ -19,6 +18,7 @@ interface Story {
     category: string
     createdAt: string
     slides: Slide[]
+    likes: number
 }
 
 
@@ -27,16 +27,10 @@ export interface GetUserStoriesResult {
 }
 
 
-export const getUserStoriesService = (limit: number | undefined = undefined) =>
+export const getUserStoriesService = () =>
     new Promise<GetUserStoriesResult | CanceledError | UnauthorizedError | ApiError>(async resolve => {
         try {
-            let queryString = ""
-
-            if (limit !== undefined) queryString = createQueryString({ limit: limit.toString() })
-
-            const url = apiURLs.getUserStories + "?" + queryString
-
-            const result = await axiosInstance.get<GetUserStoriesResult>(url, { withCredentials: true })
+            const result = await axiosInstance.get<GetUserStoriesResult>(apiURLs.getUserStories, { withCredentials: true })
 
             return resolve(result.data);
         }

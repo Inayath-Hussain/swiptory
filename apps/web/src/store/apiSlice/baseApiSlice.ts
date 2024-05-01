@@ -5,7 +5,7 @@ export const baseApiSlice = createApi({
     reducerPath: "baseApi",
     baseQuery: axiosBaseQuery(),
 
-    tagTypes: ["Story", "User-Stories"],
+    tagTypes: ["Story", "User-Stories", "User-Liked-Stories"],
 
     endpoints: () => ({})
 })

@@ -20,6 +20,7 @@ export interface IStories {
         slides: ISlide[]
         category: string
         createdAt: string
+        likes: number
     }[]
 }
 
@@ -97,6 +98,43 @@ const storiesApi = baseApiSlice.injectEndpoints({
         })
     })
 })
+
+
+
+/**
+* add more stories to storiesApi slice
+*/
+export const addMoreStories = (queryString: string, category: string, stories: IStories[string]) => storiesApi.util.updateQueryData("getStories", queryString, (data) => {
+    data[category] = stories
+    return data
+})
+
+
+
+
+/**
+ * updates likes of a story
+ * @param queryString - queryString used to get stories data
+ * @param category - category of story
+ * @param story_id - story id
+ * @param type - "increase" when user liked the story, "decrease" when user unliked the story
+ */
+export const updateLike = (queryString: string, category: string, story_id: string, type: "increase" | "decrease") =>
+    storiesApi.util.updateQueryData("getStories", queryString, (data) => {
+        const section = data[category];
+
+        if (!section) return data;
+
+        const index = section.findIndex(s => s._id === story_id)
+        if (index === -1) return data;
+
+        section[index].likes = type === "increase" ? section[index].likes + 1 : section[index].likes - 1;
+
+        data[category] = section;
+
+        return data;
+    })
+
 
 
 export const { useGetStoriesQuery, usePostStoryMutation, useEditStoryMutation } = storiesApi;

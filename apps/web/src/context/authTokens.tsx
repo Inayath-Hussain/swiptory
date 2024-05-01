@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import { updateUserProfile } from "@src/store/slices/userProfile";
 import { defaultUserStoriesQueryString, resetUserStoriesApiSlice } from "@src/store/apiSlice/userStoriesApi";
 import { AppDispatch } from "@src/store";
+import { resetUserLikedStoriesApi } from "@src/store/apiSlice/userLikedStoriesApi";
 
 
 
@@ -33,8 +34,12 @@ export const AuthTokenProvider: React.FC<PropsWithChildren> = ({ children }) => 
         // clear user info
         dispatch(updateUserProfile({ username: "", profilePicUrl: "" }))
 
+
         // clear user stories
         dispatch(resetUserStoriesApiSlice(defaultUserStoriesQueryString));
+
+        // clear user liked stories
+        dispatch(resetUserLikedStoriesApi());
     }
 
     const isLoggedIn = Boolean(accessToken || refreshToken)

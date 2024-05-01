@@ -1,10 +1,14 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 import StoryCard from "./StoryCard";
 import PrimaryButton from "../common/PrimaryButton";
 import { authTokenContext } from "@src/context/authTokens";
 import { ApiError, CanceledError, UnauthorizedError } from "@src/services/errors";
-import { IStories } from "@src/store/apiSlice/storiesApi";
+import { AppDispatch } from "@src/store";
+import { IStories, addMoreStories } from "@src/store/apiSlice/storiesApi";
+import { defaultUserStoriesQueryString, replaceUserStories } from "@src/store/apiSlice/userStoriesApi";
+import { storiesQuerySelector } from "@src/store/slices/storiesQuery";
 
 import styles from "./StoriesSection.module.css";
 
@@ -20,17 +24,12 @@ interface Iprops {
 
 const StoriesSection: React.FC<Iprops> = ({ header, category, data, fetchAll, userStory = false }) => {
 
+    const dispatch = useDispatch<AppDispatch>();
     const { logout } = useContext(authTokenContext);
 
-    const [localData, setLocalData] = useState<typeof data>(data);
     const [fetchedAll, setFetchedAll] = useState(false);
 
-
-    // when props are changed componentWillUpdate fires not componentDidMount as a result "localData" state doesn't get updated.
-    // this is done only for "your stories" section since the rest are rendered using map function
-    useEffect(() => {
-        if (userStory) setLocalData(data)
-    }, [data])
+    const { queryString } = useSelector(storiesQuerySelector);
 
 
 
@@ -47,6 +46,7 @@ const StoriesSection: React.FC<Iprops> = ({ header, category, data, fetchAll, us
             case (userStory && result instanceof UnauthorizedError):
                 logout();
                 // please login again toast
+                // open login modal
                 return
 
             case (result instanceof ApiError):
@@ -56,13 +56,25 @@ const StoriesSection: React.FC<Iprops> = ({ header, category, data, fetchAll, us
 
             default:
                 // if the component is of user stories section then extract the data accordingly
-                setLocalData(userStory ? result.stories : result[category])
+                // setLocalData(userStory ? result.stories : result[category])
+
+                switch (userStory) {
+                    case (true):
+                        dispatch(replaceUserStories(defaultUserStoriesQueryString, result.stories))
+                        break;
+
+
+                    case (false):
+                        dispatch(addMoreStories(queryString, category, result[category]))
+                        break;
+                }
+
                 setFetchedAll(true)
                 return
         }
     }
 
-    const dataExists = localData && localData.length > 0
+    const dataExists = data && data.length > 0
 
     return (
         <section className={styles.section_container}>
@@ -94,7 +106,7 @@ const StoriesSection: React.FC<Iprops> = ({ header, category, data, fetchAll, us
                     <>
                         {
                             dataExists ?
-                                localData.map(d => (
+                                data.map(d => (
                                     <StoryCard data={d.slides[0]} story_id={d._id} key={d.slides[0]._id}
                                         getStoryData={getStoryData} />
                                 ))

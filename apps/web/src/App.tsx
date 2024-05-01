@@ -10,7 +10,7 @@ import { storiesQuerySelector } from './store/slices/storiesQuery';
 import { useContext } from 'react';
 import { authTokenContext } from './context/authTokens';
 import useGetUserProfile from './hooks/useGetUserProfile';
-import { defaultUserStoriesQueryString, useGetUserStoriesQuery } from './store/apiSlice/userStoriesApi';
+import useAuthenticatedQueries from './hooks/useAuthenticatedQueries';
 
 
 function App() {
@@ -26,9 +26,7 @@ function App() {
   useGetUserProfile();
 
 
-  // fetch user stories when authenticated
-  useGetUserStoriesQuery(defaultUserStoriesQueryString, { skip: isLoggedIn === false })
-
+  useAuthenticatedQueries();
 
 
 
