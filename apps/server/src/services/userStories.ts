@@ -2,7 +2,7 @@ import { ClientSession, Types } from "mongoose";
 import { UserStories } from "../models/userStories";
 
 class UserStoriesService {
-    async addNewUser(user_id: Types.ObjectId, session: ClientSession | null = null) {
+    async addNewUser(user_id: string, session: ClientSession | null = null) {
         const newDoc = new UserStories({ user: user_id, stories: [] })
 
         // assosiate with session if provided or null

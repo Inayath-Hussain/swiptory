@@ -14,19 +14,27 @@ import { validateLikeOrUnlikeStoryBody } from "../middlewares/story/validateLike
 import { likeStoryController } from "../controllers/story/likeStory";
 import { unlikeStoryController } from "../controllers/story/unlikeStory";
 
+import { validateAddOrRemoveBookmarkBody } from "../middlewares/story/validateAddOrRemoveBookmarkBody";
+import { addBookmarkController } from "../controllers/story/addBookmark";
+import { removeBookmarkController } from "../controllers/story/removeBookmark";
+
 
 const router = Router();
 
 
-router.post("/", authMiddleware, validateAddStoryBody, addStoryController)
+router.post("/", authMiddleware, validateAddStoryBody, addStoryController);
 
-router.get("/", getStoriesController)
+router.get("/", getStoriesController);
 
-router.put("/", authMiddleware, validateEditStoryBody, editStoryController)
+router.put("/", authMiddleware, validateEditStoryBody, editStoryController);
 
-router.put("/like", authMiddleware, validateLikeOrUnlikeStoryBody, likeStoryController)
+router.put("/like", authMiddleware, validateLikeOrUnlikeStoryBody, likeStoryController);
 
-router.put("/unlike", authMiddleware, validateLikeOrUnlikeStoryBody, unlikeStoryController)
+router.put("/unlike", authMiddleware, validateLikeOrUnlikeStoryBody, unlikeStoryController);
+
+router.put("/addBookmark", authMiddleware, validateAddOrRemoveBookmarkBody, addBookmarkController);
+
+router.put("/removeBookmark", authMiddleware, validateAddOrRemoveBookmarkBody, removeBookmarkController);
 
 
 export { router as storyRouter }

@@ -71,6 +71,12 @@ class StoryService {
 
         return await storyDoc.save()
     }
+
+
+
+    async getStoryById(story_id: string, session: ClientSession | null = null) {
+        return await Story.findById(story_id, {}, { session });
+    }
 }
 
 

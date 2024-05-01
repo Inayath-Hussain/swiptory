@@ -10,12 +10,15 @@ import { UserStories } from "../../models/userStories";
 import mongoose from "mongoose";
 import { userLikedStoriesService } from "../../services/userLikedStories";
 import { UserLikedStories } from "../../models/userLikedStories";
+import { userBookmarkService } from "../../services/userBookmarks";
+import { UserBookmarks } from "../../models/userBookmarks";
 
 
 const mockedGetUser = jest.spyOn(userService, "getUser");
 const mockedCreateUser = jest.spyOn(userService, "createUser");
 const mockedAddNewUserStories = jest.spyOn(userStoriesService, "addNewUser");
 const mockedAddNewUserLikedStories = jest.spyOn(userLikedStoriesService, "addNewUser");
+const mockedAddNewUserBookmarks = jest.spyOn(userBookmarkService, "addNewUser");
 
 const mockedStartSession = jest.spyOn(mongoose, "startSession")
     // @ts-ignore
@@ -60,6 +63,7 @@ describe("register controller", () => {
         mockedCreateUser.mockResolvedValue(userDoc)
         mockedAddNewUserStories.mockResolvedValue(new UserStories({ user: userDoc._id, stories: [] }))
         mockedAddNewUserLikedStories.mockResolvedValue(new UserLikedStories({ user: userDoc._id, stories: [] }))
+        mockedAddNewUserBookmarks.mockResolvedValue(new UserBookmarks({ user: userDoc._id, stories: [] }))
 
         await registerController(req, res, next)
 

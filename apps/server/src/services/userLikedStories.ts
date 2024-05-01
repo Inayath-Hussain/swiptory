@@ -4,7 +4,7 @@ import { ServiceError } from "./error";
 
 class UserLikedStoriesService {
 
-    async addNewUser(user_id: Types.ObjectId, session: ClientSession | null = null) {
+    async addNewUser(user_id: string, session: ClientSession | null = null) {
         const newDoc = new UserLikedStories({ user: user_id, stories: [] })
 
         newDoc.$session(session);
@@ -18,7 +18,7 @@ class UserLikedStoriesService {
 
         // if doc for given user_id doesn't exist then create new
         if (doc === null) {
-            doc = await this.addNewUser(story_id, session)
+            doc = await this.addNewUser(user_id, session)
         }
 
         if (doc.stories.includes(story_id) === true) return new ServiceError("user already liked story");
@@ -34,7 +34,7 @@ class UserLikedStoriesService {
 
         // if doc for given user_id doesn't exist then create new
         if (doc === null) {
-            doc = await this.addNewUser(story_id, session)
+            doc = await this.addNewUser(user_id, session)
         }
 
         if (doc.stories.includes(story_id) === false) return new ServiceError("user didn't like the story")

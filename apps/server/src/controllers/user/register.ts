@@ -11,6 +11,7 @@ import { signAccessTokenCookie } from "../../utilities/cookies/signAccessToken";
 import { signRefreshTokenCookie } from "../../utilities/cookies/signRefreshToken";
 import { tryCatchWrapper } from "../../utilities/requestHandler/tryCatchWrapper";
 import { userLikedStoriesService } from "../../services/userLikedStories";
+import { userBookmarkService } from "../../services/userBookmarks";
 
 
 const controller: RequestHandler<{}, {}, IAuthRequestBody> = async (req, res, next) => {
@@ -30,9 +31,12 @@ const controller: RequestHandler<{}, {}, IAuthRequestBody> = async (req, res, ne
     try {
         const userDoc = await userService.createUser({ username, password }, session);
 
-        await userStoriesService.addNewUser(userDoc._id, session);
+        const user_id = userDoc._id.toString();
+        await userStoriesService.addNewUser(user_id, session);
 
-        await userLikedStoriesService.addNewUser(userDoc._id);
+        await userLikedStoriesService.addNewUser(user_id, session);
+
+        await userBookmarkService.addNewUser(user_id, session);
 
         // commit if both tasks are successful
         await session.commitTransaction();
