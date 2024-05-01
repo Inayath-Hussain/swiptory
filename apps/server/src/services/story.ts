@@ -75,7 +75,7 @@ class StoryService {
 
 
     async getStoryById(story_id: string, session: ClientSession | null = null) {
-        return await Story.findById(story_id, {}, { session });
+        return await Story.findById(story_id, { updatedAt: 0, created_by: 0 }, { session });
     }
 }
 

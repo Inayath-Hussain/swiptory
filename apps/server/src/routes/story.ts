@@ -18,6 +18,8 @@ import { validateAddOrRemoveBookmarkBody } from "../middlewares/story/validateAd
 import { addBookmarkController } from "../controllers/story/addBookmark";
 import { removeBookmarkController } from "../controllers/story/removeBookmark";
 
+import { getStoryController } from "../controllers/story/getStory";
+
 
 const router = Router();
 
@@ -25,6 +27,8 @@ const router = Router();
 router.post("/", authMiddleware, validateAddStoryBody, addStoryController);
 
 router.get("/", getStoriesController);
+
+router.get("/:id", getStoryController);
 
 router.put("/", authMiddleware, validateEditStoryBody, editStoryController);
 
