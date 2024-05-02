@@ -5,7 +5,7 @@ console.log(env.isProd)
 export const corsOptions: CorsOptions = env.isProd ?
     {
         // add react deployed origin here.
-        origin: ["https://swiptory-ashy.vercel.app/"],
+        origin: ["https://swiptory-ashy.vercel.app"],
         credentials: true
     }
     :
