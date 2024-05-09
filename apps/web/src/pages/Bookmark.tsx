@@ -30,7 +30,10 @@ const BookmarkPage = () => {
 
 
     useEffect(() => {
-        if (isLoggedIn === false) showLoginForm()
+        if (isLoggedIn === false) {
+            showLoginForm()
+            setError("Login to see your bookmarked stories")
+        }
     }, [isLoggedIn])
 
 
