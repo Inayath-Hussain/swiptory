@@ -1,14 +1,14 @@
 import { useContext } from "react";
 
-import EditIcon from "@src/assets/icons/edit.svg";
-import { userStoriesContext } from "@src/context/userStories";
-
-import styles from "./StoryCard.module.css";
-import useModal from "@src/hooks/useModal";
-import { IStories } from "@src/store/apiSlice/storiesApi";
 import StoryForm from "../Modal/Content/StoryForm";
 import StoryView from "../Modal/Content/StoryView";
+import EditIcon from "@src/assets/icons/edit.svg";
 import { loginFormContext } from "@src/context/loginForm";
+import { userStoriesContext } from "@src/context/userStories";
+import useModal from "@src/hooks/useModal";
+import { IStories } from "@src/store/apiSlice/storiesApi";
+
+import styles from "./StoryCard.module.css";
 
 interface Iprops {
     data: {
@@ -31,6 +31,13 @@ const StoryCard: React.FC<Iprops> = ({ data, story_id, getStoryData }) => {
 
     const { data: userStories } = useContext(userStoriesContext);
 
+
+    const handleEditButton = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        e.stopPropagation();
+        showEditStoryModal();
+    }
+
+
     const isUserStory = userStories?.some(v => v._id === story_id);
 
 
@@ -49,7 +56,7 @@ const StoryCard: React.FC<Iprops> = ({ data, story_id, getStoryData }) => {
 
                 {
                     isUserStory ?
-                        <button className={styles.edit_button} onClick={showEditStoryModal}>
+                        <button className={styles.edit_button} onClick={handleEditButton}>
                             <img src={EditIcon} alt="" className={styles.edit_image} />
                             Edit
                         </button>
